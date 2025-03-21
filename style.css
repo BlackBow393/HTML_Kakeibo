@@ -1,0 +1,56 @@
+h1 {
+    border: 2px solid black; /* 枠の太さと色 */
+    background-color: lightblue; /* 背景色 */
+    padding: 10px; /* 内側の余白 */
+    text-align: center; /* テキストを中央揃え */
+    border-radius: 10px; /* 角を丸くする */
+    width: 90%; /* 横幅を半分に */
+    margin: 20px auto; /* 上下20px、左右は中央配置 */
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    margin: 20px auto;
+    gap: 20px;
+}
+
+.menu-bar {
+    flex: 1; /* 幅の比率 1 */
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.menu-bar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-bar ul li {
+    margin: 10px 0;
+}
+
+.menu-bar ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+.graph-area {
+    flex: 3; /* 幅の比率 3 */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    width: 90%;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}
