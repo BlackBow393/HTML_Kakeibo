@@ -40,19 +40,51 @@ body {
 }
 
 .container {
-    display: flex;
+    display: block; /* 🔥 flex の影響をなくすため block に変更 */
     width: 1800px;
     margin: 0;
-    gap: 20px;
 }
 
+/* ハンバーガーメニューのボタン */
+#menu-toggle {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: fixed;  /* 常に画面の左上に固定 */
+    left: 10px;
+    top: 10px;
+    z-index: 1000;  /* サイドバーより前面に表示 */
+    background-color: white; /* 背景色をつけて見えやすく */
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 初期状態でサイドバーを非表示 */
 .menu-bar {
-    flex: 1; /* 幅の比率 1 */
-    background-color: #f4f4f4;
-    margin: 5px 10px 5px 0px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
     padding: 20px;
-    border-radius: 10px;
-    border: 2px solid dimgray; /* 黒色の枠線を追加 */
+    transition: transform 0.3s ease;
+    transform: translateX(-100%); /* 初期状態で隠す */
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;  /* 他の要素の前に表示 */
+}
+
+/* サイドバーを表示するクラス */
+.menu-bar.active {
+    transform: translateX(0);
+}
+
+.menu-bar h1 {
+    margin-left: 60px;
 }
 
 .menu-bar ul {
@@ -71,13 +103,7 @@ body {
 }
 
 .graph-area {
-    flex: 3; /* 幅の比率 3 */
-    background-color: #fff;
-    margin: 5px 0px 5px 10px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border: 2px solid dimgray; /* 黒色の枠線を追加 */
+    max-width: calc(100% - 250px); /* 🔥 サイドバーの幅分を考慮 */
 }
 
 footer {
