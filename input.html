@@ -25,6 +25,76 @@
     <div class="container">
         <div class="input-form">
             <h2>入力フォーム</h2>
+            <form id="expense-form">
+                <!-- 年 -->
+                <label for="year">年:</label>
+                <select id="year" name="year">
+                    <script>
+                        // 現在の年から過去10年分を生成
+                        let currentYear = new Date().getFullYear();
+                        for (let i = currentYear; i >= currentYear - 5; i--) {
+                            document.write(`<option value="${i}">${i}年</option>`);
+                        }
+                    </script>
+                </select>
+        
+                <!-- 月 -->
+                <label for="month">月:</label>
+                <select id="month" name="month">
+                    <script>
+                        for (let i = 1; i <= 12; i++) {
+                            document.write(`<option value="${i}">${i}月</option>`);
+                        }
+                    </script>
+                </select>
+        
+                <!-- 分類 -->
+                <label for="category">分類:</label>
+                <select id="category" name="category">
+                    <option value="食費">食費</option>
+                    <option value="外食">外食</option>
+                    <option value="生活用品">生活用品</option>
+                    <option value="住宅費">住宅費</option>
+                    <option value="お土産">お土産</option>
+                    <option value="コインランドリー">コインランドリー</option>
+                    <option value="レジャー">レジャー</option>
+                </select>
+        
+                 <!-- 💰 テーブル形式の入力欄 -->
+                 <h3>金額入力</h3>
+                 <table id="expense-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td class="expense-cell">
+                                <input type="number" class="expense-input" min="0" value="0">
+                                <button class="delete-btn">✖</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <button type="button" id="add-row">行を追加</button>
+
+                <!-- 🔥 自動計算された合計金額 -->
+                <label for="amount">合計金額:</label>
+                <input type="number" id="amount" name="amount" min="0" readonly> <!-- 読み取り専用 -->
+        
+                <!-- ユーザー -->
+                <label for="user">ユーザー:</label>
+                <select id="category" name="user">
+                    <option value="タクミ">タクミ</option>
+                    <option value="ミナヨ">ミナヨ</option>
+                </select>
+        
+                <!-- 送信ボタン -->
+                <button type="submit">登録</button>
+            </form>
         </div>
         <div class="data-table">
             <h2>データベース</h2>
@@ -32,6 +102,8 @@
     </div>
 
     <footer>最終更新日:</footer>
-    <script src="scripts.js"></script> <!-- JavaScriptを読み込む -->
+    <!-- JavaScriptを読み込む -->
+    <script src="scripts.js"></script>
+    <script src="expense.js"></script>
 </body>
 </html>

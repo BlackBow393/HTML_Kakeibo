@@ -63,23 +63,90 @@ body[data-page="analysis"] .page_header {
 
 .input-form {
     display: table-cell;
-    vertical-align: top; /* 上揃えにする */
-    width: 30%; /* 幅を調整 */
+    vertical-align: top;
+    width: 30%;
+    max-width: 400px; /* 💡 フォームの最大幅を制限 */
     background-color: #f9f9f9;
     margin: 5px 1%;
     border: 2px solid black;
     border-radius: 10px;
+    padding: 10px; /* 余白を確保 */
+    box-sizing: border-box;
+}
+
+.input-form input, .input-form select {
+    width: auto; /* 🔥 ここを変更 */
+    max-width: 100%; /* フォームの枠を超えないように */
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.expense-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 🔥 金額を左、削除ボタンを右に */
+    gap: 5px;
+}
+
+.expense-input {
+    flex-grow: 1; /* 💡 入力欄を広げる */
+    padding: 5px;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+}
+
+table {
+    width: 100%;
+    max-width: 100%; /* 💡 テーブルが親要素をはみ出さないように */
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+/* 送信ボタン（type="submit" のみ適用） */
+button[type="submit"] {
+    width: 100%;         /* 幅いっぱいに広げる */
+    padding: 15px;       /* ボタンを大きくする */
+    font-size: 18px;     /* 文字を大きくする */
+    font-weight: bold;   /* 文字を太くする */
+    background-color: slategray;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;    /* 🔥 上のフォームとの間にスペースを作る */
+}
+
+/* ホバー時のスタイル */
+button[type="submit"]:hover {
+    background-color: steelblue;
 }
 
 .data-table {
     display: table-cell;
-    width: 68%; /* 幅を調整 */
+    width: 68%;
+    max-width: calc(100% - 320px); /* 🔥 `input-form` の幅を考慮して調整 */
     background-color: #f9f9f9;
     margin: 5px 1%;
     border: 2px solid black;
     border-radius: 10px;
-    box-sizing: border-box; /* padding & border を幅に含める */
+    box-sizing: border-box;
+    padding: 10px;
+    overflow-x: auto; /* 🔥 横スクロールを許可 */
 }
+
 
 #menu-toggle {
     font-size: 24px;
