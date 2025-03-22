@@ -2,15 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");
 
-    console.log("menuToggle:", menuToggle);
-    console.log("sidebar:", sidebar);
+    menuToggle.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
 
-    if (menuToggle && sidebar) {
-        menuToggle.addEventListener("click", function () {
-            sidebar.classList.toggle("active");
-            console.log("Sidebar toggled!");
-        });
-    } else {
-        console.error("menuToggle または sidebar が見つかりません！");
-    }
+        // 🔥 ボタンのアイコンを切り替え
+        if (sidebar.classList.contains("active")) {
+            menuToggle.innerHTML = "&times;"; // ✖マークに変更
+        } else {
+            menuToggle.innerHTML = "&#9776;"; // ☰マークに戻す
+        }
+    });
 });

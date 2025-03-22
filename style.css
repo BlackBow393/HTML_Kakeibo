@@ -8,6 +8,19 @@ body {
     background-color: #f8f8f8; /* 背景色（任意） */
 }
 
+/* 各ページごとの背景色 */
+body[data-page="home"] .page_header {
+    background-color: lightblue;
+}
+
+body[data-page="input"] .page_header {
+    background-color: lightcoral;
+}
+
+body[data-page="analysis"] .page_header {
+    background-color: lightgreen;
+}
+
 .page_header {
     align-items: center;
     padding: 10px;
@@ -41,24 +54,32 @@ body {
 
 .container {
     display: block; /* 🔥 flex の影響をなくすため block に変更 */
-    width: 1800px;
+    width: 100%;
     margin: 0;
 }
 
-/* ハンバーガーメニューのボタン */
+/* ✅ 修正後のCSS */
 #menu-toggle {
     font-size: 24px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 10px;
-    position: fixed;  /* 常に画面の左上に固定 */
+    
+    /* 🚀 サイズを適切に調整 */
+    width: 40px;  /* 幅を固定 */
+    height: 40px; /* 高さを固定 */
+    line-height: 40px; /* テキストを中央に揃える */
+    padding: 0; /* ✅ 余計な余白をなくす */
+    
+    /* `page_header` 内に配置 */
+    position: absolute;
     left: 10px;
-    top: 10px;
-    z-index: 1000;  /* サイドバーより前面に表示 */
-    background-color: white; /* 背景色をつけて見えやすく */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    z-index: 1000;
+    background-color: white;
     border-radius: 5px;
-    padding: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -98,7 +119,7 @@ body {
 
 .menu-bar ul li a {
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 18px;
 }
 

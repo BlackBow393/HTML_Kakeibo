@@ -5,21 +5,23 @@
     <meta charset="utf-8">
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body data-page="home">
     <div class="page_header">
         <button id="menu-toggle">&#9776;</button> <!-- ハンバーガーメニューのボタン -->
         <h1>個人家計簿</h1>
         <h2>～ホーム～</h2>
     </div>
+    <!-- 🚀 .container の外に移動 -->
+    <nav class="menu-bar" id="sidebar">
+        <h1>メニュー</h1>
+        <ul>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="input.html">支出入力</a></li>
+            <li><a href="analysis.html">支出分析</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
-        <nav class="menu-bar" id="sidebar">
-            <h1>メニュー</h1>
-            <ul>
-                <li><a href="#">ホーム</a></li>
-                <li><a href="input.html">支出入力</a></li>
-                <li><a href="analysis.html">支出分析</a></li>
-            </ul>
-        </nav>
         <div class="graph-area">
             <h2>支出・収入のグラフ</h2>
             <canvas id="expenseChart"></canvas> <!-- グラフ用のCanvas -->
