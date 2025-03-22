@@ -92,7 +92,12 @@ body[data-page="analysis"] .page_header {
 
 .expense-input {
     flex-grow: 1; /* 💡 入力欄を広げる */
+    text-align: right; /* 🔥 数字を右揃えにする */
     padding: 5px;
+}
+
+#amount {
+    text-align: right; /* 🔥 右揃え */
 }
 
 .delete-btn {
