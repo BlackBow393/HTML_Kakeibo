@@ -25,7 +25,7 @@
     <div class="container">
         <div class="input-form">
             <h2>入力フォーム</h2>
-            <form id="expense-form">
+            <form id="expense-form" action="/submit" method="POST">
                 <!-- 年 -->
                 <label for="year">年:</label>
                 <select id="year" name="year">
@@ -87,7 +87,7 @@
         
                 <!-- ユーザー -->
                 <label for="user">ユーザー:</label>
-                <select id="category" name="user">
+                <select id="user" name="user">
                     <option value="タクミ">タクミ</option>
                     <option value="ミナヨ">ミナヨ</option>
                 </select>
@@ -98,6 +98,20 @@
         </div>
         <div class="data-table">
             <h2>データベース</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>年</th>
+                        <th>月</th>
+                        <th>分類</th>
+                        <th>金額</th>
+                        <th>ユーザー</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 
