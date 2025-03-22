@@ -55,12 +55,32 @@ body[data-page="analysis"] .page_header {
 }
 
 .container {
-    display: block; /* 🔥 flex の影響をなくすため block に変更 */
+    display: table; /* 🔥 flex の影響をなくすため block に変更 */
     width: 100%;
     margin: 0;
+    vertical-align: top;
 }
 
-/* ✅ 修正後のCSS */
+.input-form {
+    display: table-cell;
+    vertical-align: top; /* 上揃えにする */
+    width: 30%; /* 幅を調整 */
+    background-color: #f9f9f9;
+    margin: 5px 1%;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.data-table {
+    display: table-cell;
+    width: 68%; /* 幅を調整 */
+    background-color: #f9f9f9;
+    margin: 5px 1%;
+    border: 2px solid black;
+    border-radius: 10px;
+    box-sizing: border-box; /* padding & border を幅に含める */
+}
+
 #menu-toggle {
     font-size: 24px;
     background: none;
@@ -134,7 +154,7 @@ footer {
     max-width: 100vw; /* 画面幅を超えないようにする */
     box-sizing: border-box; /* 🔥 padding & border を width に含める */
     
-    margin: 0 auto; /* 中央に配置 */
+    margin: 5px auto 0 auto; /* 中央に配置 */
     text-align: center;
     
     border: 2px solid black;
