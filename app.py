@@ -71,7 +71,7 @@ def submit():
     conn.commit()
     conn.close()
 
-    return redirect("/")  # 入力後にトップページへリダイレクト
+    return redirect("/input")  # 入力後にトップページへリダイレクト
 
 # 📌 JSON APIを作成（データ取得用）
 @app.route("/get_data", methods=["GET"])
