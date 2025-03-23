@@ -32,7 +32,23 @@ def index():
     expenses = cursor.fetchall()
     conn.close()
 
+    return render_template("index.html", expenses=expenses)
+
+# 📌 支出入力ページ
+@app.route("/input")
+def input_page():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, year, month, category, amount, user FROM expenses ORDER BY id DESC")
+    expenses = cursor.fetchall()
+    conn.close()
+
     return render_template("input.html", expenses=expenses)
+
+# 📌 支出分析ページ
+@app.route("/analysis")
+def analysis_page():
+    return render_template("analysis.html")
 
 # 📌 データを登録するAPI
 @app.route("/submit", methods=["POST"])
