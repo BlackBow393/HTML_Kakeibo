@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const addRowBtn = document.getElementById("add-row");
     const totalAmountInput = document.getElementById("amount");
     const expenseForm = document.getElementById("expense-form");
+    const deleteButton = document.getElementById("data-delete");
 
     // 🔥 金額の合計を計算し、合計金額欄に反映する
     function updateTotalAmount() {
@@ -91,4 +92,52 @@ document.addEventListener("DOMContentLoaded", function () {
             expenseForm.submit(); // ユーザーがOKを押したらフォーム送信
         }
     });
+
+    // 🚀 削除ボタンのクリックイベントを追加
+    if (deleteButton) {
+        deleteButton.addEventListener("click", function () {
+            const year = document.getElementById("year").value;
+            const month = document.getElementById("month").value;
+            const category = document.getElementById("category").value;
+            const user = document.getElementById("user").value;
+
+            // 削除確認ポップアップ
+            const confirmMessage = `以下のデータを削除しますか？\n\n`
+                + `年: ${year}\n`
+                + `月: ${month}\n`
+                + `分類: ${category}\n`
+                + `ユーザー: ${user}`;
+
+            if (!confirm(confirmMessage)) {
+                return; // キャンセルされたら処理を中断
+            }
+
+            // サーバーに削除リクエストを送信
+            fetch("/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    year: year,
+                    month: month,
+                    category: category,
+                    user: user
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("データを削除しました。");
+                    location.reload(); // 成功時にページをリロード
+                } else {
+                    alert("削除に失敗しました。");
+                }
+            })
+            .catch(error => {
+                console.error("削除エラー:", error);
+                alert("エラーが発生しました。");
+            });
+        });
+    }
 });

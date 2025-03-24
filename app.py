@@ -73,6 +73,28 @@ def submit():
 
     return redirect("/input")  # 入力後にトップページへリダイレクト
 
+# 📌 データを削除するAPI
+@app.route("/delete", methods=["POST"])
+def delete():
+    data = request.json
+    year = data.get("year")
+    month = data.get("month")
+    category = data.get("category")
+    user = data.get("user")
+
+    # 入力データのバリデーション
+    if not (year and month and category and user):
+        return jsonify({"error": "削除に必要な情報が不足しています！"}), 400
+
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM expenses WHERE year = ? AND month = ? AND category = ? AND user = ?",
+                   (year, month, category, user))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": True})
+
 # 📌 JSON APIを作成（データ取得用）
 @app.route("/get_data", methods=["GET"])
 def get_data():
