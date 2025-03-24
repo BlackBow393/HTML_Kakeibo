@@ -139,6 +139,25 @@ button[type="submit"]:hover {
     background-color: steelblue;
 }
 
+/* 削除ボタン（id="data-delete" のみ適用） */
+#data-delete {
+    width: 100%;         /* 幅いっぱいに広げる */
+    padding: 15px;       /* ボタンを大きくする */
+    font-size: 18px;     /* 文字を大きくする */
+    font-weight: bold;   /* 文字を太くする */
+    background-color: slategray;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;    /* 🔥 上のフォームとの間にスペースを作る */
+}
+
+/* ホバー時のスタイル */
+#data-delete:hover {
+    background-color: pink;
+}
+
 .data-table {
     display: table-cell;
     width: 68%;
