@@ -63,15 +63,36 @@ def submit():
     if not (year and month and category and amount and user):
         return jsonify({"error": "入力項目が不足しています！"}), 400
 
-    # DBにデータを保存
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO expenses (year, month, category, amount, user) VALUES (?, ?, ?, ?, ?)",
-                   (year, month, category, amount, user))
+
+    # 既存データを確認
+    cursor.execute("""
+        SELECT id FROM expenses 
+        WHERE year = ? AND month = ? AND category = ? AND user = ?
+    """, (year, month, category, user))
+    
+    existing_data = cursor.fetchone()
+
+    if existing_data:
+        # 既存データがあれば上書き更新
+        cursor.execute("""
+            UPDATE expenses 
+            SET amount = ? 
+            WHERE year = ? AND month = ? AND category = ? AND user = ?
+        """, (amount, year, month, category, user))
+    else:
+        # データがなければ新規登録
+        cursor.execute("""
+            INSERT INTO expenses (year, month, category, amount, user) 
+            VALUES (?, ?, ?, ?, ?)
+        """, (year, month, category, amount, user))
+
     conn.commit()
     conn.close()
 
-    return redirect("/input")  # 入力後にトップページへリダイレクト
+    return redirect("/input")  # 入力後にリダイレクト
+
 
 # 📌 データを削除するAPI
 @app.route("/delete", methods=["POST"])

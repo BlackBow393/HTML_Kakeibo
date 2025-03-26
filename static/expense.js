@@ -79,18 +79,47 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // ✅ 確認ポップアップを表示
-        const confirmMessage = `以下の内容で登録しますか？\n\n`
-            + `年: ${year}\n`
-            + `月: ${month}\n`
-            + `分類: ${category}\n`
-            + `合計金額: ${amount} 円\n`
-            + `ユーザー: ${user}`;
+        // 🔍 既存データがあるかチェック
+        fetch(`/get_data`)
+            .then(response => response.json())
+            .then(data => {
+                let existingData = data.find(expense =>
+                    expense[1] == year &&
+                    expense[2] == month &&
+                    expense[3] == category &&
+                    expense[5] == user
+                );
 
-        if (confirm(confirmMessage)) {
-            alert("登録完了しました！"); // 🎉 登録完了メッセージ
-            expenseForm.submit(); // ユーザーがOKを押したらフォーム送信
-        }
+                let confirmMessage;
+                if (existingData) {
+                    // 既に登録されている場合の警告
+                    alert("既に登録されているデータがあります。上書きします。");
+
+                    confirmMessage = `以下の内容で上書き登録しますか？\n\n`
+                        + `年: ${year}\n`
+                        + `月: ${month}\n`
+                        + `分類: ${category}\n`
+                        + `合計金額: ${amount} 円\n`
+                        + `ユーザー: ${user}`;
+                } else {
+                    // 新規登録のメッセージ
+                    confirmMessage = `以下の内容で登録しますか？\n\n`
+                        + `年: ${year}\n`
+                        + `月: ${month}\n`
+                        + `分類: ${category}\n`
+                        + `合計金額: ${amount} 円\n`
+                        + `ユーザー: ${user}`;
+                }
+
+                if (confirm(confirmMessage)) {
+                    alert(existingData ? "上書き登録完了しました！" : "登録完了しました！"); // 🎉 完了メッセージ
+                    expenseForm.submit(); // フォーム送信
+                }
+            })
+            .catch(error => {
+                console.error("データ取得エラー:", error);
+                alert("データの取得に失敗しました。");
+            });
     });
 
     // 🚀 削除ボタンのクリックイベントを追加
