@@ -190,6 +190,10 @@ button[type="submit"]:hover {
     overflow-x: auto; /* 🔥 横スクロールを許可 */
 }
 
+.data-table p {
+    font-size: 24px;
+    font-weight: bold;
+}
 
 #menu-toggle {
     font-size: 24px;

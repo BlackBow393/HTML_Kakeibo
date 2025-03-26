@@ -110,6 +110,7 @@
         </div>
         <div class="data-table">
             <h2>データベース</h2>
+            {% if expenses and expenses|length > 0 %}
             <table border="1">
                 <thead>
                     <tr>
@@ -122,7 +123,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense[0] }}</td>
+                        <td>{{ expense[1] }}</td>
+                        <td>{{ expense[2] }}</td>
+                        <td>{{ expense[3] }}</td>
+                        <td>{{ expense[4] }}</td>
+                        <td>{{ expense[5] }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
+            </table>
+            {% else %}
+                <p>登録されたデータはありません</p>
+            {% endif %}
             </table>
         </div>
     </div>
