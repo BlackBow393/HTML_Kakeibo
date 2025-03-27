@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>個人家計簿　～支出入力～</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>    
+<body data-page="input">
+    <div class="page_header">
+        <button id="menu-toggle">&#9776;</button> <!-- ハンバーガーメニューのボタン -->
+        <h1>個人家計簿</h1>
+        <h2>～支出入力～</h2>
+    </div>
+
+    <!-- 🚀 .container の外に移動 -->
+    <nav class="menu-bar" id="sidebar">
+        <h1>メニュー</h1>
+        <ul>
+            <li><a href="{{ url_for('index') }}">ホーム</a></li>
+            <li><a href="{{ url_for('input_page') }}">支出入力</a></li>
+            <li><a href="{{ url_for('analysis_page') }}">支出分析</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="input-form">
+            <h2>入力フォーム</h2>
+            <form id="expense-form" action="/submit" method="POST">
+                <!-- 年 -->
+                <div class="form-group">
+                    <label for="year">年:</label>
+                    <select id="year" name="year">
+                        <script>
+                            // 現在の年から過去10年分を生成
+                            let currentYear = new Date().getFullYear();
+                            for (let i = currentYear; i >= currentYear - 5; i--) {
+                                document.write(`<option value="${i}">${i}年</option>`);
+                            }
+                        </script>
+                    </select>
+                </div>
+        
+                <!-- 月 -->
+                <div class="form-group">
+                    <label for="month">月:</label>
+                    <select id="month" name="month">
+                        <script>
+                            for (let i = 1; i <= 12; i++) {
+                                document.write(`<option value="${i}">${i}月</option>`);
+                            }
+                        </script>
+                    </select>
+                </div>
+        
+                <!-- 分類 -->
+                <div class="form-group">
+                    <label for="category">分類:</label>
+                    <select id="category" name="category">
+                        <option value="食費">食費</option>
+                        <option value="外食">外食</option>
+                        <option value="生活用品">生活用品</option>
+                        <option value="住宅費">住宅費</option>
+                        <option value="お土産">お土産</option>
+                        <option value="コインランドリー">コインランドリー</option>
+                        <option value="レジャー">レジャー</option>
+                    </select>
+                </div>
+        
+                 <!-- 💰 テーブル形式の入力欄 -->
+                 <h3>金額入力</h3>
+                 <table id="expense-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td class="expense-cell">
+                                <input type="number" class="expense-input" min="0" value="0">
+                                <button class="delete-btn">✖</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <button type="button" id="add-row">行を追加</button>
+
+                <!-- 🔥 自動計算された合計金額 -->
+                <div class="form-group">
+                    <label for="amount">合計金額:</label>
+                    <input type="number" id="amount" name="amount" min="0" readonly> <!-- 読み取り専用 -->
+                </div>
+                
+                <!-- ユーザー -->
+                <div class="form-group">
+                    <label for="user">ユーザー:</label>
+                    <select id="user" name="user">
+                        <option value="タクミ">タクミ</option>
+                        <option value="ミナヨ">ミナヨ</option>
+                    </select>
+                </div>
+        
+                <!-- 送信ボタン -->
+                <button type="submit">登録</button>
+                <!-- 削除ボタン -->
+                <button type="button" id="data-delete">削除</button>
+            </form>
+        </div>
+        <div class="data-table">
+            <h2>データベース</h2>
+            {% if expenses and expenses|length > 0 %}
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>年</th>
+                        <th>月</th>
+                        <th>分類</th>
+                        <th>金額</th>
+                        <th>ユーザー</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense[0] }}</td>
+                        <td>{{ expense[1] }}</td>
+                        <td>{{ expense[2] }}</td>
+                        <td>{{ expense[3] }}</td>
+                        <td>{{ expense[4] }}</td>
+                        <td>{{ expense[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p>登録されたデータはありません</p>
+            {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <footer>最終更新日:</footer>
+    <!-- JavaScriptを読み込む -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='expense.js') }}"></script>
+</body>
+</html>
