@@ -182,25 +182,31 @@ button[type="submit"]:hover {
     font-weight: bold;
 }
 
+.data-table h2 {
+    margin-left: 20px;
+}
 .data-table-wrapper {
     width: 100%;
     overflow-x: auto;  /* 横スクロールを許可 */
+    height: 400px;
 }
 
 .data-table {
-    width: 100%;
+    width: 95%;
     border-collapse: collapse;
     table-layout: fixed; /* 🔥 列幅を固定 */
+    margin-left: 2.5%;
 }
 
 .data-table thead {
     display: block;
     width: calc(100% - 17px); /* 💡 スクロールバーの分だけ縮める */
+    background-color: lightcoral;
 }
 
 .data-table tbody {
     display: block;
-    max-height: 300px; /* 💡 tbody だけスクロール */
+    max-height: 400px; /* 💡 tbody だけスクロール */
     overflow-y: auto;
     width: 100%;
 }
