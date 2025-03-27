@@ -3,7 +3,7 @@
 <head>
     <title>個人家計簿　～支出分析～</title>
     <meta charset="utf-8">
-    <link href="style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body data-page="analysis">
     <div class="page_header">
@@ -15,9 +15,9 @@
     <nav class="menu-bar" id="sidebar">
         <h1>メニュー</h1>
         <ul>
-            <li><a href="index.html">ホーム</a></li>
-            <li><a href="input.html">支出入力</a></li>
-            <li><a href="analysis.html">支出分析</a></li>
+            <li><a href="{{ url_for('index') }}">ホーム</a></li>
+            <li><a href="{{ url_for('input_page') }}">支出入力</a></li>
+            <li><a href="{{ url_for('analysis_page') }}">支出分析</a></li>
         </ul>
     </nav>
 
@@ -28,6 +28,7 @@
         </div>
     </div>
     <footer>最終更新日:</footer>
-    <script src="scripts.js"></script> <!-- JavaScriptを読み込む -->
+    <!-- JavaScriptを読み込む -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
