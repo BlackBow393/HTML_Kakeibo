@@ -177,22 +177,45 @@ button[type="submit"]:hover {
     color: black;
 }
 
-.data-table {
-    display: table-cell;
-    width: 68%;
-    max-width: calc(100% - 320px); /* 🔥 `input-form` の幅を考慮して調整 */
-    background-color: #f9f9f9;
-    margin: 5px 1%;
-    border: 2px solid black;
-    border-radius: 10px;
-    box-sizing: border-box;
-    padding: 10px;
-    overflow-x: auto; /* 🔥 横スクロールを許可 */
-}
-
 .data-table p {
     font-size: 24px;
     font-weight: bold;
+}
+
+.data-table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* 横スクロールを許可 */
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 🔥 列幅を固定 */
+}
+
+.data-table thead {
+    display: block;
+    width: calc(100% - 17px); /* 💡 スクロールバーの分だけ縮める */
+}
+
+.data-table tbody {
+    display: block;
+    max-height: 300px; /* 💡 tbody だけスクロール */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.data-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* 🔥 列幅を統一 */
+}
+
+.data-table th, .data-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
 }
 
 #menu-toggle {
