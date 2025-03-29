@@ -22,10 +22,12 @@
     </nav>
 
     <div class="container">
-        <div class="graph-area">
-            <h2>支出・収入のグラフ</h2>
-            <canvas id="expenseChart"></canvas> <!-- グラフ用のCanvas -->
-        </div>
+        <h2>支出・収入のグラフ</h2>
+        {% if graph_url %}
+            <img src="{{ graph_url }}" alt="Expense Graph">
+        {% else %}
+            <p>データがありません。</p>
+        {% endif %}
     </div>
     <footer>最終更新日:</footer>
     <!-- JavaScriptを読み込む -->
