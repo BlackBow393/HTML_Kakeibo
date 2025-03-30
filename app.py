@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
+import matplotlib
+matplotlib.use('Agg')  # ここでバックエンドをAggに設定
 import matplotlib.pyplot as plt
 import os
 import numpy as np
-import matplotlib.font_manager as fm
+import matplotlib.font_manager as fm  # これを追加
 
 app = Flask(__name__)
 DB_FILE = "kakeibo.db"
