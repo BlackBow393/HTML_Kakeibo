@@ -215,7 +215,7 @@ def create_pie_chart():
     categories = [row[0] for row in data]
     amounts = [row[1] for row in data]
 
-    # 日本語フォントの設定（create_expense_graph() と共通）
+    # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
         font_candidates = fm.findSystemFonts(fontpaths=['/usr/share/fonts', '/Library/Fonts', 'C:/Windows/Fonts'])
@@ -227,16 +227,37 @@ def create_pie_chart():
     else:
         print("⚠ 日本語フォントが見つかりません！英語のまま表示します。")
 
-    # 🔹 円グラフを描画
+    # 🔹 円グラフを描画（ラベルの位置を調整）
     plt.figure(figsize=(8, 8))
-    plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140, counterclock=False)
+    wedges, texts, autotexts = plt.pie(
+        amounts, labels=None, autopct=autopct_format, startangle=90, counterclock=False,
+        pctdistance=0.9,  # 数値（％）の表示位置を調整（円の中心からの距離）
+        labeldistance=1.15  # ラベルの距離を調整
+    )
+
+    # 🔹 ラベルのサイズを調整
+    for text in texts:
+        text.set_fontsize(12)  # カテゴリー名のフォントサイズ
+        text.set_fontproperties(font_prop)  # 日本語フォントを適用
+    for autotext in autotexts:
+        autotext.set_fontsize(10)  # 割合（％）のフォントサイズ
+        autotext.set_color("black")  # ％の色を変更
+        autotext.set_fontweight("bold")  # 太字にする
+
     plt.title("年間支出割合", fontproperties=font_prop)
+
+    # 🔹 凡例を追加（ラベルの重なりを避ける）
+    plt.legend(wedges, categories, loc="upper left", bbox_to_anchor=(1, 1), fontsize=10)
 
     # 画像を保存
     pie_chart_path = os.path.join(STATIC_FOLDER, "expense_pie_chart.png")
     plt.savefig(pie_chart_path, bbox_inches="tight")
     plt.close()
     return "/static/expense_pie_chart.png"
+
+# ラベル表示の切り替え
+def autopct_format(pct):
+    return f'{pct:.1f}%' if pct >= 3 else ''  # 3% 未満なら空文字
 
 if __name__ == "__main__":
     app.run(debug=True)
