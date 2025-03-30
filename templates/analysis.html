@@ -22,9 +22,57 @@
     </nav>
 
     <div class="container">
-        <div class="graph-area">
-            <h2>支出・収入のグラフ</h2>
-            <canvas id="expenseChart"></canvas> <!-- グラフ用のCanvas -->
+        <h2>支出のグラフ</h2>
+        <form method="POST">
+            <label for="year">年を選択：</label>
+            <select name="year" id="year" onchange="this.form.submit()">
+                {% for year in years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>
+                    {{ year }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+        <div class="graph_container">
+            <table border="1">
+                <tr>
+                    <th>分類別各月の支出金額</th>
+                    <th>分類別年間の支出割合</th>
+                </tr>
+                <tr>
+                    <td>
+                        {% if graph_url %}
+                            <img src="{{ graph_url }}" alt="分類別各月の支出金額">
+                        {% else %}
+                            <p>データがありません。</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pie_chart_url %}
+                            <img src="{{ pie_chart_url }}" alt="分類別年間の支出割合">
+                        {% else %}
+                            <p>データがありません。</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {% if graph_url %}
+                            <img src="{{ graph_user_url }}" alt="分類別各月の支出金額">
+                        {% else %}
+                            <p>データがありません。</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pie_chart_url %}
+                            <img src="{{ pie_user_chart_url }}" alt="分類別年間の支出割合">
+                        {% else %}
+                            <p>データがありません。</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        
         </div>
     </div>
     <footer>最終更新日:</footer>

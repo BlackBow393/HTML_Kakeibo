@@ -288,8 +288,19 @@ button[type="submit"]:hover {
     font-size: 18px;
 }
 
-.graph-area {
-    max-width: calc(100% - 250px); /* 🔥 サイドバーの幅分を考慮 */
+.graph_container {
+    text-align: center;  /* 画像を中央に配置 */
+    margin: 20px 0;
+}
+
+.graph_container img {
+    width: 100%;  /* 画像の幅を100%に調整 */
+    max-width: 900px;  /* 最大サイズを900pxに制限 */
+    height: auto;  /* アスペクト比を維持 */
+}
+
+.graph_container table th {
+    background-color: lightgreen;
 }
 
 footer {
