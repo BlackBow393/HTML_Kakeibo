@@ -53,8 +53,9 @@ def input_page():
 # 📌 支出分析ページ
 @app.route("/analysis")
 def analysis_page():
-    graph_url = create_expense_graph()  # グラフ画像を生成
-    return render_template("analysis.html", graph_url=graph_url)
+    graph_url = create_expense_graph()  # 棒グラフを生成
+    pie_chart_url = create_pie_chart()  # 円グラフを生成
+    return render_template("analysis.html", graph_url=graph_url, pie_chart_url=pie_chart_url)
 
 # 📌 データを登録するAPI
 @app.route("/submit", methods=["POST"])
@@ -193,6 +194,49 @@ def create_expense_graph():
     plt.savefig(graph_path, bbox_inches="tight")
     plt.close()
     return "/static/expense_chart.png"
+
+# 📌 カテゴリーごとの年間支出割合の円グラフを作成
+def create_pie_chart():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # 年間のカテゴリー別支出合計を取得
+    cursor.execute("""
+        SELECT category, SUM(amount) 
+        FROM expenses 
+        GROUP BY category
+    """)
+    data = cursor.fetchall()
+    conn.close()
+
+    if not data:
+        return None  # データがない場合はグラフを作成しない
+
+    categories = [row[0] for row in data]
+    amounts = [row[1] for row in data]
+
+    # 日本語フォントの設定（create_expense_graph() と共通）
+    font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
+    if not os.path.exists(font_path):
+        font_candidates = fm.findSystemFonts(fontpaths=['/usr/share/fonts', '/Library/Fonts', 'C:/Windows/Fonts'])
+        font_path = next((f for f in font_candidates if 'ipag' in f.lower() or 'msmincho' in f.lower()), None)
+
+    if font_path:
+        font_prop = fm.FontProperties(fname=font_path)
+        plt.rcParams['font.family'] = font_prop.get_name()
+    else:
+        print("⚠ 日本語フォントが見つかりません！英語のまま表示します。")
+
+    # 🔹 円グラフを描画
+    plt.figure(figsize=(8, 8))
+    plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140, counterclock=False)
+    plt.title("年間支出割合", fontproperties=font_prop)
+
+    # 画像を保存
+    pie_chart_path = os.path.join(STATIC_FOLDER, "expense_pie_chart.png")
+    plt.savefig(pie_chart_path, bbox_inches="tight")
+    plt.close()
+    return "/static/expense_pie_chart.png"
 
 if __name__ == "__main__":
     app.run(debug=True)
