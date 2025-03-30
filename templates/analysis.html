@@ -23,6 +23,16 @@
 
     <div class="container">
         <h2>支出のグラフ</h2>
+        <form method="POST">
+            <label for="year">年を選択：</label>
+            <select name="year" id="year" onchange="this.form.submit()">
+                {% for year in years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>
+                    {{ year }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
         <div class="graph_container">
             <table border="1">
                 <tr>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, session
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
@@ -10,6 +10,22 @@ import matplotlib.font_manager as fm  # これを追加
 app = Flask(__name__)
 DB_FILE = "kakeibo.db"
 STATIC_FOLDER = "static"  # 画像を保存するフォルダ
+app.secret_key = "your_secret_key_here"
+
+def get_latest_year():
+    """データベースからyear列の最大値を取得"""
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT MAX(year) FROM expenses")  # 最大のyearを取得
+    latest_year = cursor.fetchone()[0]  # 結果を取得
+    conn.close()
+    return latest_year if latest_year else 2024  # データがない場合はデフォルト2024
+
+@app.before_request
+def set_default_year():
+    """アプリ起動後に一度だけ実行し、初回アクセス時に最大yearを設定"""
+    if "selected_year" not in session:
+        session["selected_year"] = get_latest_year()  # 初期値をセット
 
 # 📌 データベースの初期化（テーブル作成）
 def init_db():
@@ -53,11 +69,25 @@ def input_page():
     return render_template("input.html", expenses=expenses)
 
 # 📌 支出分析ページ
-@app.route("/analysis")
+@app.route("/analysis", methods=["GET", "POST"])
 def analysis_page():
-    graph_url = create_expense_graph()  # 棒グラフを生成
-    pie_chart_url = create_pie_chart()  # 円グラフを生成
-    return render_template("analysis.html", graph_url=graph_url, pie_chart_url=pie_chart_url)
+    if request.method == "POST":
+        session["selected_year"] = int(request.form.get("year", session["selected_year"]))
+
+    selected_year = session["selected_year"]
+
+    graph_url = create_expense_graph(selected_year)  # 棒グラフを生成
+    pie_chart_url = create_pie_chart(selected_year)  # 円グラフを生成
+    
+    # データベースからユニークな年のリストを取得
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT year FROM expenses ORDER BY year DESC")
+    years = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    
+    return render_template("analysis.html", graph_url=graph_url, pie_chart_url=pie_chart_url, years=years, selected_year=selected_year)
+
 
 # 📌 データを登録するAPI
 @app.route("/submit", methods=["POST"])
@@ -137,7 +167,7 @@ def get_data():
     return jsonify(expenses)
 
 # 📌 グラフを作成する関数（カテゴリーごとの月別支出額）
-def create_expense_graph():
+def create_expense_graph(year):
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
@@ -157,9 +187,10 @@ def create_expense_graph():
     cursor.execute("""
         SELECT month, category, SUM(amount) 
         FROM expenses 
+        WHERE year = ?
         GROUP BY month, category
         ORDER BY month ASC
-    """)
+    """,(year,))
     data = cursor.fetchall()
     conn.close()
 
@@ -216,7 +247,7 @@ def create_expense_graph():
 
 
 # 📌 カテゴリーごとの年間支出割合の円グラフを作成
-def create_pie_chart():
+def create_pie_chart(year):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
@@ -224,8 +255,9 @@ def create_pie_chart():
     cursor.execute("""
         SELECT category, SUM(amount) 
         FROM expenses 
+        WHERE year = ?
         GROUP BY category
-    """)
+    """,(year,))
     data = cursor.fetchall()
     conn.close()
 
