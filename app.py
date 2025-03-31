@@ -53,9 +53,21 @@ def index():
     cursor = conn.cursor()
     cursor.execute("SELECT id, year, month, category, amount, user FROM expenses ORDER BY id DESC")
     expenses = cursor.fetchall()
+    
+    # 年・月・分類ごとに、ユーザーAとユーザーBの合計金額を列で取得
+    cursor.execute("""
+        SELECT year, month, category,
+               SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END) AS user_a_total,
+               SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) AS user_b_total
+        FROM expenses
+        GROUP BY year, month, category
+        ORDER BY year DESC, month DESC, category
+    """)
+    categorized_totals = cursor.fetchall()
+    
     conn.close()
 
-    return render_template("index.html", expenses=expenses)
+    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals)
 
 # 📌 支出入力ページ
 @app.route("/input")

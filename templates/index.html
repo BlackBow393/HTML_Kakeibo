@@ -22,9 +22,47 @@
     </nav>
 
     <div class="container">
-        <div class="graph-area">
-            <h2>支出・収入のグラフ</h2>
-            <canvas id="expenseChart"></canvas> <!-- グラフ用のCanvas -->
+        <h2>支出・収入のグラフ</h2>
+        <div class="view_erea">
+            <table class="view_table">
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="data-table">
+                            {% if expenses and expenses|length > 0 %}
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>年</th>
+                                        <th>月</th>
+                                        <th>分類</th>
+                                        <th>タクミ 合計</th>
+                                        <th>ミナヨ 合計</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for total in categorized_totals %}
+                                    <tr>
+                                        <td>{{ total[0] }}</td>  <!-- 年 -->
+                                        <td>{{ total[1] }}</td>  <!-- 月 -->
+                                        <td>{{ total[2] }}</td>  <!-- 分類 -->
+                                        <td>{{ total[3] }}</td>  <!-- ユーザーA 合計 -->
+                                        <td>{{ total[4] }}</td>  <!-- ユーザーB 合計 -->
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                                <p>登録されたデータはありません</p>
+                            {% endif %}
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <footer>最終更新日:</footer>
