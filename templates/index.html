@@ -31,8 +31,8 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <div class="data-table">
-                            {% if expenses and expenses|length > 0 %}
+                        <div class="total-table">
+                            {% if categorized_totals and categorized_totals|length > 0 %}
                             <table border="1">
                                 <thead>
                                     <tr>
@@ -49,8 +49,8 @@
                                         <td>{{ total[0] }}</td>  <!-- 年 -->
                                         <td>{{ total[1] }}</td>  <!-- 月 -->
                                         <td>{{ total[2] }}</td>  <!-- 分類 -->
-                                        <td>{{ total[3] }}</td>  <!-- ユーザーA 合計 -->
-                                        <td>{{ total[4] }}</td>  <!-- ユーザーB 合計 -->
+                                        <td>{{ total[3] }}</td>  <!-- タクミ 合計 -->
+                                        <td>{{ total[4] }}</td>  <!-- ミナヨ 合計 -->
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -58,7 +58,6 @@
                             {% else %}
                                 <p>登録されたデータはありません</p>
                             {% endif %}
-                            </table>
                         </div>
                     </td>
                 </tr>
