@@ -26,8 +26,20 @@
         <div class="view_erea">
             <table class="view_table">
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>
+                        {% if graph_url %}
+                            <img src="{{ graph_url }}" alt="分類別各月の支出金額">
+                        {% else %}
+                            <p>データがありません。</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pie_chart_url %}
+                            <img src="{{ pie_chart_url }}" alt="分類別年間の支出割合">
+                        {% else %}
+                            <p>データがありません。</p>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -41,6 +53,7 @@
                                         <th>分類</th>
                                         <th>タクミ 合計</th>
                                         <th>ミナヨ 合計</th>
+                                        <th>精算額</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,6 +64,7 @@
                                         <td>{{ total[2] }}</td>  <!-- 分類 -->
                                         <td>{{ total[3] }}</td>  <!-- タクミ 合計 -->
                                         <td>{{ total[4] }}</td>  <!-- ミナヨ 合計 -->
+                                        <td>{{ total[5] }}</td>  <!-- 精算額 -->
                                     </tr>
                                     {% endfor %}
                                 </tbody>

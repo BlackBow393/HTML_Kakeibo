@@ -58,7 +58,9 @@ def index():
     cursor.execute("""
         SELECT year, month, category,
            CAST(SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END) AS INTEGER) AS user_a_total,
-           CAST(SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) AS INTEGER) AS user_b_total
+           CAST(SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) AS INTEGER) AS user_b_total,
+            CAST((SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
+                    SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 AS INTEGER) AS settlement_amount
         FROM expenses
         GROUP BY year, month, category
         ORDER BY year DESC, month DESC, category
