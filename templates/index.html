@@ -37,7 +37,7 @@
             <table class="view_table">
                 <tr>
                     <th>各月のユーザー別支出金額</th>
-                    <th>分類別年間の支出割合</th>
+                    <th>食費と外食と生活用品の支出推移</th>
                 </tr>
                 <tr>
                     <td>
@@ -48,8 +48,8 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if pie_user_chart_url %}
-                            <img src="{{ pie_user_chart_url }}" alt="分類別年間の支出割合">
+                        {% if graph_lifecost_url %}
+                            <img src="{{ graph_lifecost_url }}" alt="食費と外食と生活用品の支出推移">
                         {% else %}
                             <p>データがありません。</p>
                         {% endif %}

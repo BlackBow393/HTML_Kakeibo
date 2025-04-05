@@ -55,7 +55,7 @@ def index():
     selected_year = session["selected_year"]
 
     graph_index_url = create_expense_index_graph(selected_year)
-    pie_user_chart_url = create_pie_user_chart(selected_year)
+    graph_lifecost_url = create_lifecost_graph(selected_year)
     
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
@@ -72,7 +72,7 @@ def index():
         FROM expenses
         WHERE year = ?
         GROUP BY year, month, category
-        ORDER BY year DESC, month DESC, category
+        ORDER BY year ASC, month ASC, category
     """, (selected_year,))
     categorized_totals = cursor.fetchall()
     
@@ -84,7 +84,7 @@ def index():
         FROM expenses
         WHERE year = ?
         GROUP BY year, month
-        ORDER BY year DESC, month DESC
+        ORDER BY year ASC, month ASC
     """, (selected_year,))
     calcurate_totals = cursor.fetchall()
     
@@ -95,7 +95,7 @@ def index():
     years = [row[0] for row in cursor.fetchall()]
     conn.close()
 
-    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals,calcurate_totals=calcurate_totals, graph_index_url=graph_index_url, pie_user_chart_url=pie_user_chart_url, years=years, selected_year=selected_year)
+    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals,calcurate_totals=calcurate_totals, graph_index_url=graph_index_url, graph_lifecost_url=graph_lifecost_url, years=years, selected_year=selected_year)
 
 # 📌 支出入力ページ
 @app.route("/input")
@@ -594,6 +594,63 @@ def create_expense_index_graph(year):
     plt.savefig(graph_path, bbox_inches="tight")
     plt.close()
     return "/static/expense_index_chart.png"
+
+# 📌 折れ線グラフを作成する関数（ユーザーごとの月別支出額）
+def create_lifecost_graph(year):
+    # 🔹 日本語フォントの設定
+    font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
+    if not os.path.exists(font_path):
+        font_candidates = fm.findSystemFonts(fontpaths=['/usr/share/fonts', '/Library/Fonts', 'C:/Windows/Fonts'])
+        font_path = next((f for f in font_candidates if 'ipag' in f.lower() or 'msmincho' in f.lower()), None)
+
+    if font_path:
+        font_prop = fm.FontProperties(fname=font_path)
+        plt.rcParams['font.family'] = font_prop.get_name()
+    else:
+        print("⚠ 日本語フォントが見つかりません！英語のまま表示します。")
+
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # 月ごとのカテゴリ合計を取得
+    cursor.execute("""
+        SELECT month,
+               CAST(SUM(CASE WHEN category IN ('食費', '外食', '生活用品') THEN amount ELSE 0 END) AS INTEGER) AS category_total
+        FROM expenses 
+        WHERE year = ?
+        GROUP BY month
+        ORDER BY month ASC
+    """, (year,))
+    data = cursor.fetchall()
+    conn.close()
+
+    if not data:
+        return None
+
+    # データ整形
+    months = [row[0] for row in data]
+    totals = [row[1] for row in data]
+
+    # 折れ線グラフを描画
+    plt.figure(figsize=(10, 6))
+    plt.plot(months, totals, marker='o', linestyle='-', color='mediumseagreen', label='生活費合計')
+
+    # ラベルを表示
+    for i, total in enumerate(totals):
+        plt.text(months[i], total + 2000, f"{int(total):,}円", ha="center", fontsize=11)
+
+    plt.xlabel("月")
+    plt.ylabel("支出金額")
+    plt.xticks(months)
+    plt.grid(True)
+    plt.legend()
+
+    # 保存
+    graph_path = os.path.join(STATIC_FOLDER, "lifecost_chart.png")
+    plt.savefig(graph_path, bbox_inches="tight")
+    plt.close()
+
+    return "/static/lifecost_chart.png"
 
 if __name__ == "__main__":
     app.run(debug=True)
