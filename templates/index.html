@@ -91,6 +91,36 @@
                             {% endif %}
                         </div>
                     </td>
+                    <tr>
+                        <th colspan="2">各月の精算金額リスト</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="total-table">
+                                {% if calcurate_totals and calcurate_totals|length > 0 %}
+                                <table border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>年</th>
+                                            <th>月</th>
+                                            <th>精算額</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for total in calcurate_totals %}
+                                        <tr>
+                                            <td>{{ total[0] }}</td>  <!-- 年 -->
+                                            <td>{{ total[1] }}</td>  <!-- 月 -->
+                                            <td>{{ total[2] }}</td>  <!-- 精算額 -->
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                    <p>登録されたデータはありません</p>
+                                {% endif %}
+                            </div>
+                        </td>
                 </tr>
             </table>
         </div>

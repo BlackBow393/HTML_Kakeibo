@@ -76,6 +76,18 @@ def index():
     """, (selected_year,))
     categorized_totals = cursor.fetchall()
     
+    # 年・月・分類ごとに、ユーザーAとユーザーBの合計金額を列で取得
+    cursor.execute("""
+        SELECT year, month, 
+            CAST((SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
+                    SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 AS INTEGER) AS settlement_amount
+        FROM expenses
+        WHERE year = ?
+        GROUP BY year, month
+        ORDER BY year DESC, month DESC
+    """, (selected_year,))
+    calcurate_totals = cursor.fetchall()
+    
     # データベースからユニークな年のリストを取得
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
@@ -83,7 +95,7 @@ def index():
     years = [row[0] for row in cursor.fetchall()]
     conn.close()
 
-    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals, graph_index_url=graph_index_url, pie_user_chart_url=pie_user_chart_url, years=years, selected_year=selected_year)
+    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals,calcurate_totals=calcurate_totals, graph_index_url=graph_index_url, pie_user_chart_url=pie_user_chart_url, years=years, selected_year=selected_year)
 
 # 📌 支出入力ページ
 @app.route("/input")
