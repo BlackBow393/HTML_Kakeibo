@@ -23,23 +23,40 @@
 
     <div class="container">
         <h2>支出・収入のグラフ</h2>
+        <form method="POST">
+            <label for="year">年を選択：</label>
+            <select name="year" id="year" onchange="this.form.submit()">
+                {% for year in years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>
+                    {{ year }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
         <div class="view_erea">
             <table class="view_table">
                 <tr>
+                    <th>各月のユーザー別支出金額</th>
+                    <th>分類別年間の支出割合</th>
+                </tr>
+                <tr>
                     <td>
-                        {% if graph_url %}
-                            <img src="{{ graph_url }}" alt="分類別各月の支出金額">
+                        {% if graph_index_url %}
+                            <img src="{{ graph_index_url }}" alt="分類別各月の支出金額">
                         {% else %}
                             <p>データがありません。</p>
                         {% endif %}
                     </td>
                     <td>
-                        {% if pie_chart_url %}
-                            <img src="{{ pie_chart_url }}" alt="分類別年間の支出割合">
+                        {% if pie_user_chart_url %}
+                            <img src="{{ pie_user_chart_url }}" alt="分類別年間の支出割合">
                         {% else %}
                             <p>データがありません。</p>
                         {% endif %}
                     </td>
+                </tr>
+                <tr>
+                    <th colspan="2">各月のユーザー毎分類別支出金額リスト</th>
                 </tr>
                 <tr>
                     <td colspan="2">

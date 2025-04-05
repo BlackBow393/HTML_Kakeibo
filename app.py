@@ -47,8 +47,16 @@ def init_db():
 init_db()  # アプリ起動時にDBを確認
 
 # 📌 ホームページ（支出入力画面）
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
+    if request.method == "POST":
+        session["selected_year"] = int(request.form.get("year", session["selected_year"]))
+
+    selected_year = session["selected_year"]
+
+    graph_index_url = create_expense_index_graph(selected_year)
+    pie_user_chart_url = create_pie_user_chart(selected_year)
+    
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, year, month, category, amount, user FROM expenses ORDER BY id DESC")
@@ -62,14 +70,20 @@ def index():
             CAST((SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
                     SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 AS INTEGER) AS settlement_amount
         FROM expenses
+        WHERE year = ?
         GROUP BY year, month, category
         ORDER BY year DESC, month DESC, category
-    """)
+    """, (selected_year,))
     categorized_totals = cursor.fetchall()
     
+    # データベースからユニークな年のリストを取得
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT year FROM expenses ORDER BY year DESC")
+    years = [row[0] for row in cursor.fetchall()]
     conn.close()
 
-    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals)
+    return render_template("index.html", expenses=expenses, categorized_totals=categorized_totals, graph_index_url=graph_index_url, pie_user_chart_url=pie_user_chart_url, years=years, selected_year=selected_year)
 
 # 📌 支出入力ページ
 @app.route("/input")
@@ -487,6 +501,87 @@ def create_pie_user_chart(year):
 # ラベル表示の切り替え
 def autopct_format(pct):
     return f'{pct:.1f}%' if pct >= 3 else ''  # 3% 未満なら空文字
+
+# 📌 グラフを作成する関数（ユーザーごとの月別支出額）
+def create_expense_index_graph(year):
+    # 🔹 日本語フォントの設定
+    font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
+    if not os.path.exists(font_path):
+        font_candidates = fm.findSystemFonts(fontpaths=['/usr/share/fonts', '/Library/Fonts', 'C:/Windows/Fonts'])
+        font_path = next((f for f in font_candidates if 'ipag' in f.lower() or 'msmincho' in f.lower()), None)
+
+    if font_path:
+        font_prop = fm.FontProperties(fname=font_path)
+        plt.rcParams['font.family'] = font_prop.get_name()
+    else:
+        print("⚠ 日本語フォントが見つかりません！英語のまま表示します。")
+
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # 各月ごとのカテゴリー別支出額を取得
+    cursor.execute("""
+        SELECT month, user, SUM(amount) 
+        FROM expenses 
+        WHERE year = ?
+        GROUP BY month, user
+        ORDER BY month ASC
+    """,(year,))
+    data = cursor.fetchall()
+    conn.close()
+
+    if not data:
+        return None  # データがなければグラフを作成しない
+
+    # データの整形
+    months = sorted(set(row[0] for row in data))  # 月のリスト
+    users = sorted(set(row[1] for row in data))  # ユーザーのリスト
+
+    user_data = {cat: [0] * len(months) for cat in users}
+
+    for month, user, amount in data:
+        month_index = months.index(month)
+        # タクミはマイナスとして扱う
+        if user == "タクミ":
+            amount = -amount
+        user_data[user][month_index] = amount
+        
+    # ユーザーごとの色を設定
+    user_colors = {
+        'タクミ': 'steelblue',
+        'ミナヨ': 'coral',
+        # 他のカテゴリーに色を追加
+    }
+
+    # 積み上げ棒グラフの描画
+    plt.figure(figsize=(10, 6))
+
+    for category, values in user_data.items():
+        color = user_colors.get(category, 'gray')
+        values_array = np.array(values)
+        bars = plt.bar(months, values_array, label=category, color=color)
+        
+        # ラベル表示
+        for i, bar in enumerate(bars):
+            height = bar.get_height()
+            if height != 0:  # 値がある場合のみラベルを表示
+                label = f"{abs(int(height)):,}円"
+                # ミナヨ（正）ならバーの上、タクミ（負）ならバーの下にラベルを置く
+                y_pos = height + 500 if height > 0 else height - 3000
+                plt.text(bar.get_x() + bar.get_width() / 2, y_pos, label,
+                        ha='center', va='bottom' if height > 0 else 'top',
+                        fontsize=11, fontweight='bold')
+
+    plt.xlabel("月")
+    plt.ylabel("支出金額")
+    plt.xticks(months)  # X軸を月に設定
+    plt.legend()
+
+    # 画像を保存
+    graph_path = os.path.join(STATIC_FOLDER, "expense_index_chart.png")
+    plt.savefig(graph_path, bbox_inches="tight")
+    plt.close()
+    return "/static/expense_index_chart.png"
 
 if __name__ == "__main__":
     app.run(debug=True)
