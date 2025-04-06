@@ -67,9 +67,9 @@
                     </select>
                 </div>
         
-                 <!-- 💰 テーブル形式の入力欄 -->
-                 <h3>金額入力</h3>
-                 <table id="expense-table">
+                <!-- 💰 テーブル形式の入力欄 -->
+                <h3>金額入力</h3>
+                <table id="expense-table">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -86,7 +86,7 @@
                         </tr>
                     </tbody>
                 </table>
-                 <button type="button" id="add-row">行を追加</button>
+                <button type="button" id="add-row">行を追加</button>
 
                 <!-- 🔥 自動計算された合計金額 -->
                 <div class="form-group">
@@ -109,37 +109,39 @@
                 <button type="button" id="data-delete">削除</button>
             </form>
         </div>
-        <div class="data-table">
+        <div class="data-area">
             <h2>データベース</h2>
-            {% if expenses and expenses|length > 0 %}
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>年</th>
-                        <th>月</th>
-                        <th>分類</th>
-                        <th>金額</th>
-                        <th>ユーザー</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for expense in expenses %}
-                    <tr>
-                        <td>{{ expense[0] }}</td>
-                        <td>{{ expense[1] }}</td>
-                        <td>{{ expense[2] }}</td>
-                        <td>{{ expense[3] }}</td>
-                        <td>{{ expense[4] }}</td>
-                        <td>{{ expense[5] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-                <p>登録されたデータはありません</p>
-            {% endif %}
-            </table>
+            <div class="data-table">
+                {% if expenses and expenses|length > 0 %}
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>年</th>
+                            <th>月</th>
+                            <th>分類</th>
+                            <th>金額</th>
+                            <th>ユーザー</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense[0] }}</td>
+                            <td>{{ expense[1] }}</td>
+                            <td>{{ expense[2] }}</td>
+                            <td>{{ expense[3] }}</td>
+                            <td>{{ expense[4] }}</td>
+                            <td>{{ expense[5] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <p>登録されたデータはありません</p>
+                {% endif %}
+                </table>
+            </div>
         </div>
     </div>
 
@@ -147,5 +149,6 @@
     <!-- JavaScriptを読み込む -->
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
     <script src="{{ url_for('static', filename='expense.js') }}"></script>
+    <script src="{{ url_for('static', filename='adjustTableHeader.js') }}"></script>
 </body>
 </html>

@@ -10,3 +10,16 @@ window.addEventListener('load', function () {
     adjustHeaderWidth();
     window.addEventListener('resize', adjustHeaderWidth);
 });
+
+window.addEventListener('load', function () {
+    const tbody = document.querySelector('.data-table tbody');
+    const thead = document.querySelector('.data-table thead');
+
+    function adjustHeaderWidth() {
+        const hasScrollBar = tbody.scrollHeight > tbody.clientHeight;
+        thead.style.width = hasScrollBar ? 'calc(100% - 20px)' : '100%';
+    }
+
+    adjustHeaderWidth();
+    window.addEventListener('resize', adjustHeaderWidth);
+});
