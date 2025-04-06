@@ -1,0 +1,163 @@
+.input-form {
+    display: table-cell;
+    vertical-align: top;
+    width: 30%;
+    max-width: 400px; /* 💡 フォームの最大幅を制限 */
+    background-color: #f9f9f9;
+    margin: 5px 1%;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px; /* 余白を確保 */
+    box-sizing: border-box;
+}
+
+.input-form .form-group {
+    display: flex;
+    align-items: center;  /* ラベルと入力欄の高さを揃える */
+    gap: 10px;  /* ラベルと入力欄の間に余白を追加 */
+    margin-bottom: 10px; /* 下の項目との余白 */
+}
+
+.input-form label {
+    margin-top: 10px; /* 上部に余白を追加 */
+    text-align: left;
+    width: 80px;
+    background-color: lightgray;
+}
+
+.input-form input, .input-form select {
+    flex: 1;
+    width: auto; /* 🔥 ここを変更 */
+    max-width: 100%; /* フォームの枠を超えないように */
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.expense-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 🔥 金額を左、削除ボタンを右に */
+    gap: 5px;
+}
+
+.expense-input {
+    flex-grow: 1; /* 💡 入力欄を広げる */
+    text-align: right; /* 🔥 数字を右揃えにする */
+    padding: 5px;
+}
+
+#amount {
+    text-align: right; /* 🔥 右揃え */
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+}
+
+table {
+    width: 100%;
+    max-width: 100%; /* 💡 テーブルが親要素をはみ出さないように */
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+/* 送信ボタン（type="submit" のみ適用） */
+button[type="submit"] {
+    width: 48%;         /* 幅いっぱいに広げる */
+    padding: 15px;       /* ボタンを大きくする */
+    font-size: 18px;     /* 文字を大きくする */
+    font-weight: bold;   /* 文字を太くする */
+    background-color: slategray;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;    /* 🔥 上のフォームとの間にスペースを作る */
+    float: left;
+}
+
+/* ホバー時のスタイル */
+button[type="submit"]:hover {
+    background-color: steelblue;
+    color: black;
+}
+
+/* 削除ボタン（id="data-delete" のみ適用） */
+#data-delete {
+    width: 48%;         /* 幅いっぱいに広げる */
+    padding: 15px;       /* ボタンを大きくする */
+    font-size: 18px;     /* 文字を大きくする */
+    font-weight: bold;   /* 文字を太くする */
+    background-color: slategray;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;    /* 🔥 上のフォームとの間にスペースを作る */
+    float: right;
+}
+
+/* ホバー時のスタイル */
+#data-delete:hover {
+    background-color: pink;
+    color: black;
+}
+
+.data-table p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.data-table h2 {
+    margin-left: 20px;
+}
+
+.data-table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* 横スクロールを許可 */
+    height: 400px;
+}
+
+.data-table {
+    width: 95%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 🔥 列幅を固定 */
+    margin-left: 2.5%;
+}
+
+.data-table thead {
+    display: block;
+    width: calc(100% - 17px); /* 💡 スクロールバーの分だけ縮める */
+    background-color: lightcoral;
+}
+
+.data-table tbody {
+    display: block;
+    max-height: 400px; /* 💡 tbody だけスクロール */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.data-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* 🔥 列幅を統一 */
+}
+
+.data-table th, .data-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+}

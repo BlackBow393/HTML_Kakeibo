@@ -567,6 +567,8 @@ def create_expense_index_graph(year):
 
     # 積み上げ棒グラフの描画
     plt.figure(figsize=(10, 6))
+    plt.axhline(0, color='black', linewidth=2.0)  # Y=0に太めの線を引く
+
 
     for category, values in user_data.items():
         color = user_colors.get(category, 'gray')

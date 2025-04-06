@@ -1,0 +1,42 @@
+.view_erea {
+    text-align: center;  /* 画像を中央に配置 */
+    max-width: 100vw; /* 💡 ビューポートに収める */
+}
+
+.total-table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* 横スクロールを許可 */
+    height: 400px;
+}
+
+.total-table {
+    width: 95%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 🔥 列幅を固定 */
+    margin-left: 2.5%;
+}
+
+.total-table thead {
+    display: block;
+    background-color: lightblue;
+}
+
+.total-table tbody {
+    display: block;
+    max-height: 400px; /* 💡 tbody だけスクロール */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.total-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* 🔥 列幅を統一 */
+}
+
+.total-table th, .total-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+}
