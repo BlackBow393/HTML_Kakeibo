@@ -62,6 +62,10 @@ body[data-page="analysis"] .page_header {
     overflow-x: auto;  /* 横スクロールを許可 */
 }
 
+.container h2 {
+    margin-left: 15px;
+}
+
 #menu-toggle {
     font-size: 24px;
     background: none;

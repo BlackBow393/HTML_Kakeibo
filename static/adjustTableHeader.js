@@ -4,7 +4,7 @@ window.addEventListener('load', function () {
 
     function adjustHeaderWidth() {
         const hasScrollBar = tbody.scrollHeight > tbody.clientHeight;
-        thead.style.width = hasScrollBar ? 'calc(100% - 17px)' : '100%';
+        thead.style.width = hasScrollBar ? 'calc(100% - 20px)' : '100%';
     }
 
     adjustHeaderWidth();

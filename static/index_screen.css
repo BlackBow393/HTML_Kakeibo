@@ -1,6 +1,24 @@
+.container form {
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+.container form select {
+    font-size: 20px;
+    padding: 5px;
+    border: 3px solid #333;       /* 枠線の太さと色 */
+    border-radius: 8px;           /* 角を丸く */
+}
+
 .view_erea {
     text-align: center;  /* 画像を中央に配置 */
-    max-width: 100vw; /* 💡 ビューポートに収める */
+    width: 100%;
+}
+
+.view_table img {
+    width: 100%;  /* 画像の幅を100%に調整 */
+    max-width: 900px;  /* 最大サイズを900pxに制限 */
+    height: auto;  /* アスペクト比を維持 */
 }
 
 .total-table-wrapper {
