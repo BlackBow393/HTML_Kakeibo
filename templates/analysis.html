@@ -33,14 +33,30 @@
                 </option>
                 {% endfor %}
             </select>
+            <label for="category">分類を選択：</label>
+            <select name="category" id="category" onchange="this.form.submit()">
+                {% set categories = ['all' , '食費', '外食', '生活用品', '住宅費', 'お土産', 'コインランドリー', 'レジャー'] %}
+                {% for cat in categories %}
+                <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat if cat != 'all' else 'すべて' }}</option>
+                {% endfor %}
+            </select>
+            <label for="user">ユーザーを選択：</label>
+            <select name="user" id="user" onchange="this.form.submit()">
+                {% set users = ['all' , 'タクミ', 'ミナヨ'] %}
+                {% for u in users %}
+                <option value="{{ u }}" {% if u == selected_user %}selected{% endif %}>{{ u if u != 'all' else 'すべて' }}</option>
+                {% endfor %}
+            </select>
         </form>
         <div class="graph_container">
             <table border="1">
                 <tr>
-                    <th>分類別各月の支出金額</th>
-                    <th>分類別年間の支出割合</th>
+                    <th>分析方法</th>
+                    <th>月毎の支出金額推移</th>
+                    <th>年間の支出割合</th>
                 </tr>
                 <tr>
+                    <td class="analysis_label">カテゴリー別</td>
                     <td>
                         {% if graph_url %}
                             <img src="{{ graph_url }}" alt="分類別各月の支出金額">
@@ -57,15 +73,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="analysis_label">ユーザー別</td>
                     <td>
-                        {% if graph_url %}
+                        {% if graph_user_url %}
                             <img src="{{ graph_user_url }}" alt="分類別各月の支出金額">
                         {% else %}
                             <p>データがありません。</p>
                         {% endif %}
                     </td>
                     <td>
-                        {% if pie_chart_url %}
+                        {% if pie_user_chart_url %}
                             <img src="{{ pie_user_chart_url }}" alt="分類別年間の支出割合">
                         {% else %}
                             <p>データがありません。</p>

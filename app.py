@@ -27,6 +27,12 @@ def set_default_year():
     if "selected_year" not in session:
         session["selected_year"] = get_latest_year()  # 初期値をセット
 
+    if "selected_category" not in session:
+        session["selected_category"] = "すべて"  # カテゴリー初期値
+
+    if "selected_user" not in session:
+        session["selected_user"] = "すべて"  # ユーザー初期値
+
 # 📌 データベースの初期化（テーブル作成）
 def init_db():
     conn = sqlite3.connect(DB_FILE)
@@ -118,12 +124,22 @@ def analysis_page():
     if request.method == "POST":
         session["selected_year"] = int(request.form.get("year", session["selected_year"]))
 
-    selected_year = session["selected_year"]
+        category = request.form.get("category", session["selected_category"])
+        user = request.form.get("user", session["selected_user"])
 
-    graph_url = create_expense_graph(selected_year)  # 棒グラフを生成
-    pie_chart_url = create_pie_chart(selected_year)  # 円グラフを生成
-    graph_user_url = create_expense_user_graph(selected_year)  # 棒グラフを生成
-    pie_user_chart_url = create_pie_user_chart(selected_year)
+        # 「すべて」のときは None に変換（→ SQL で絞り込みしない）
+        session["selected_category"] = None if category == "all" else category
+        session["selected_user"] = None if user == "all" else user
+
+    # セッションから値を取得（初回アクセスにも備えてデフォルト値を設定）
+    selected_year = session.get("selected_year", session["selected_year"])
+    selected_category = session.get("selected_category", "all")
+    selected_user = session.get("selected_user", "all")
+
+    graph_url = create_expense_graph(selected_year, selected_category, selected_user)  # 棒グラフを生成
+    pie_chart_url = create_pie_chart(selected_year, selected_category, selected_user)  # 円グラフを生成
+    graph_user_url = create_expense_user_graph(selected_year, selected_category, selected_user)  # 棒グラフを生成
+    pie_user_chart_url = create_pie_user_chart(selected_year, selected_category, selected_user)
     
     # データベースからユニークな年のリストを取得
     conn = sqlite3.connect(DB_FILE)
@@ -132,7 +148,17 @@ def analysis_page():
     years = [row[0] for row in cursor.fetchall()]
     conn.close()
     
-    return render_template("analysis.html", graph_url=graph_url, pie_chart_url=pie_chart_url, graph_user_url=graph_user_url, pie_user_chart_url=pie_user_chart_url, years=years, selected_year=selected_year)
+    return render_template(
+        "analysis.html",
+        graph_url=graph_url,
+        pie_chart_url=pie_chart_url,
+        graph_user_url=graph_user_url,
+        pie_user_chart_url=pie_user_chart_url,
+        years=years,
+        selected_year=selected_year,
+        selected_category=selected_category,
+        selected_user=selected_user
+    )
 
 
 # 📌 データを登録するAPI
@@ -217,7 +243,7 @@ def get_data():
     return jsonify(expenses)
 
 # 📌 グラフを作成する関数（カテゴリーごとの月別支出額）
-def create_expense_graph(year):
+def create_expense_graph(year, category=None, user=None):
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
@@ -233,14 +259,28 @@ def create_expense_graph(year):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # 各月ごとのカテゴリー別支出額を取得
-    cursor.execute("""
-        SELECT month, category, SUM(amount) 
-        FROM expenses 
+    # 🔹 SQLクエリ作成（動的にフィルターを追加）
+    base_query = """
+        SELECT month, category, SUM(amount)
+        FROM expenses
         WHERE year = ?
+    """
+    params = [year]
+
+    if category:
+        base_query += " AND category = ?"
+        params.append(category)
+
+    if user:
+        base_query += " AND user = ?"
+        params.append(user)
+
+    base_query += """
         GROUP BY month, category
         ORDER BY month ASC
-    """,(year,))
+    """
+
+    cursor.execute(base_query, tuple(params))
     data = cursor.fetchall()
     conn.close()
 
@@ -297,17 +337,32 @@ def create_expense_graph(year):
 
 
 # 📌 カテゴリーごとの年間支出割合の円グラフを作成
-def create_pie_chart(year):
+def create_pie_chart(year, category=None, user=None):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # 年間のカテゴリー別支出合計を取得
-    cursor.execute("""
-        SELECT category, SUM(amount) 
-        FROM expenses 
+    # 🔹 SQLクエリ作成（動的にフィルターを追加）
+    base_query = """
+        SELECT category, SUM(amount)
+        FROM expenses
         WHERE year = ?
-        GROUP BY category
-    """,(year,))
+    """
+    params = [year]
+
+    if category:
+        base_query += " AND category = ?"
+        params.append(category)
+
+    if user:
+        base_query += " AND user = ?"
+        params.append(user)
+
+    base_query += """
+        GROUP BY  category
+        ORDER BY SUM(amount) DESC
+    """
+
+    cursor.execute(base_query, tuple(params))
     data = cursor.fetchall()
     conn.close()
 
@@ -373,7 +428,7 @@ def create_pie_chart(year):
     return "/static/expense_pie_chart.png"
 
 # 📌 グラフを作成する関数（ユーザーごとの月別支出額）
-def create_expense_user_graph(year):
+def create_expense_user_graph(year, category=None, user=None):
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
@@ -389,14 +444,28 @@ def create_expense_user_graph(year):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # 各月ごとのカテゴリー別支出額を取得
-    cursor.execute("""
-        SELECT month, user, SUM(amount) 
-        FROM expenses 
+    # 🔹 SQLクエリ作成（動的にフィルターを追加）
+    base_query = """
+        SELECT month, user, SUM(amount)
+        FROM expenses
         WHERE year = ?
+    """
+    params = [year]
+
+    if category:
+        base_query += " AND category = ?"
+        params.append(category)
+
+    if user:
+        base_query += " AND user = ?"
+        params.append(user)
+
+    base_query += """
         GROUP BY month, user
         ORDER BY month ASC
-    """,(year,))
+    """
+
+    cursor.execute(base_query, tuple(params))
     data = cursor.fetchall()
     conn.close()
 
@@ -407,7 +476,7 @@ def create_expense_user_graph(year):
     months = sorted(set(row[0] for row in data))  # 月のリスト
     users = sorted(set(row[1] for row in data))  # ユーザーのリスト
 
-    user_data = {cat: [0] * len(months) for cat in users}
+    user_data = {user: [0] * len(months) for user in users}
     total_by_month = [0] * len(months)  # 月ごとの合計額を格納
 
     for month, user, amount in data:
@@ -448,17 +517,32 @@ def create_expense_user_graph(year):
 
 
 # 📌 カテゴリーごとの年間支出割合の円グラフを作成
-def create_pie_user_chart(year):
+def create_pie_user_chart(year, category=None, user=None):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # 年間のカテゴリー別支出合計を取得
-    cursor.execute("""
-        SELECT user, SUM(amount) 
-        FROM expenses 
+    # 🔹 SQLクエリ作成（動的にフィルターを追加）
+    base_query = """
+        SELECT user, SUM(amount)
+        FROM expenses
         WHERE year = ?
+    """
+    params = [year]
+
+    if category:
+        base_query += " AND category = ?"
+        params.append(category)
+
+    if user:
+        base_query += " AND user = ?"
+        params.append(user)
+
+    base_query += """
         GROUP BY user
-    """,(year,))
+        ORDER BY SUM(amount) DESC
+    """
+
+    cursor.execute(base_query, tuple(params))
     data = cursor.fetchall()
     conn.close()
 
