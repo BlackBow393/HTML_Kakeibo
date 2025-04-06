@@ -102,7 +102,11 @@ def index():
 def input_page():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
-    cursor.execute("SELECT id, year, month, category, amount, user FROM expenses ORDER BY id DESC")
+    cursor.execute("""
+        SELECT id, year, month, category, amount, user 
+        FROM expenses 
+        ORDER BY year ASC, month ASC
+        """)
     expenses = cursor.fetchall()
     conn.close()
 
@@ -202,7 +206,11 @@ def delete():
 def get_data():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
-    cursor.execute("SELECT id, year, month, category, amount, user FROM expenses ORDER BY id DESC")
+    cursor.execute("""
+        SELECT id, year, month, category, amount, user 
+        FROM expenses
+        ORDER BY year ASC, month ASC
+        """)
     expenses = cursor.fetchall()
     conn.close()
 
