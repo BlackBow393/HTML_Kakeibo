@@ -2,10 +2,6 @@ from flask import Flask, render_template, request, redirect, jsonify, session
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
-import matplotlib.pyplot as plt
-import os
-import numpy as np
-import matplotlib.font_manager as fm  # これを追加
 from graph_analysis1 import create_expense_graph , create_pie_chart
 from graph_analysis2 import create_expense_user_graph , create_pie_user_chart
 from graph_index import create_expense_index_graph , create_lifecost_graph
