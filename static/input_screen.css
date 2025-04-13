@@ -1,14 +1,23 @@
-.input-form {
-    display: table-cell;
+.view_erea th {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#form_erea {
     vertical-align: top;
-    width: 30%;
-    max-width: 400px; /* 💡 フォームの最大幅を制限 */
+}
+
+.input-form {
+    display: block;
+    width: 95%;
+    max-width: 600px; /* 💡 フォームの最大幅を制限 */
     background-color: #f9f9f9;
-    margin: 5px 1%;
+    margin: 0 auto; /* ← これで中央に配置される！ */
     border: 2px solid black;
     border-radius: 10px;
     padding: 10px; /* 余白を確保 */
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .input-form .form-group {
@@ -21,8 +30,8 @@
 .input-form label {
     margin-top: 10px; /* 上部に余白を追加 */
     text-align: left;
-    font-size: 18px;
-    width: 80px;
+    font-size: 16px;
+    width: 90px;
     background-color: lightgray;
 }
 
@@ -116,10 +125,6 @@ button[type="submit"]:hover {
     color: black;
 }
 
-.data-area h2 {
-    margin-left: 2.5%;
-}
-
 .data-table p {
     font-size: 24px;
     font-weight: bold;
@@ -145,7 +150,7 @@ button[type="submit"]:hover {
 
 .data-table tbody {
     display: block;
-    max-height: 600px; /* 💡 tbody だけスクロール */
+    max-height: 900px; /* 💡 tbody だけスクロール */
     overflow-y: auto;
     width: 100%;
 }
