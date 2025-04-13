@@ -15,6 +15,8 @@ app.secret_key = "your_secret_key_here"
 
 # 📌 グラフを作成する関数（ユーザーごとの月別支出額）
 def create_expense_index_graph(year):
+    font_prop = None  # ← 追加：初期化
+    
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
@@ -98,6 +100,8 @@ def create_expense_index_graph(year):
 
 # 📌 折れ線グラフを作成する関数（ユーザーごとの月別支出額）
 def create_lifecost_graph(year):
+    font_prop = None  # ← 追加：初期化
+    
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):

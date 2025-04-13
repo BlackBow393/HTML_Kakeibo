@@ -15,6 +15,8 @@ app.secret_key = "your_secret_key_here"
 
 # 📌 グラフを作成する関数（ユーザーごとの月別支出額）
 def create_expense_user_graph(year, category=None, user=None):
+    font_prop = None  # ← 追加：初期化
+    
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
@@ -137,6 +139,8 @@ def create_pie_user_chart(year, category=None, user=None):
     users = [row[0] for row in data]
     amounts = [row[1] for row in data]
 
+    font_prop = None  # ← 追加：初期化
+
     # 🔹 日本語フォントの設定
     font_path = "/usr/share/fonts/opentype/ipafont-mincho/ipam.ttf"
     if not os.path.exists(font_path):
@@ -172,7 +176,8 @@ def create_pie_user_chart(year, category=None, user=None):
     # 🔹 ラベルのサイズを調整
     for text in texts:
         text.set_fontsize(12)  # カテゴリー名のフォントサイズ
-        text.set_fontproperties(font_prop)  # 日本語フォントを適用
+        if font_prop:
+            text.set_fontproperties(font_prop)  # 日本語フォントを適用
     for autotext in autotexts:
         autotext.set_fontsize(10)  # 割合（％）のフォントサイズ
         autotext.set_color("black")  # ％の色を変更
