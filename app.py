@@ -132,8 +132,8 @@ def analysis_page():
 
     # セッションから値を取得（初回アクセスにも備えてデフォルト値を設定）
     selected_year = session.get("selected_year", session["selected_year"])
-    selected_category = session.get("selected_category", "all")
-    selected_user = session.get("selected_user", "all")
+    selected_category = session.get("selected_category", None) #all→None
+    selected_user = session.get("selected_user", None) #all→None
 
     graph_url = create_expense_graph(selected_year, selected_category, selected_user)  # 棒グラフを生成
     pie_chart_url = create_pie_chart(selected_year, selected_category, selected_user)  # 円グラフを生成
