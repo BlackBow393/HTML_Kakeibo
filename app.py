@@ -27,10 +27,10 @@ def set_default_year():
         session["selected_year"] = get_latest_year()  # 初期値をセット
 
     if "selected_category" not in session:
-        session["selected_category"] = "すべて"  # カテゴリー初期値
+        session["selected_category"] = None  # カテゴリー初期値 すべて→None
 
     if "selected_user" not in session:
-        session["selected_user"] = "すべて"  # ユーザー初期値
+        session["selected_user"] = None  # ユーザー初期値 すべて→None
 
 # 📌 データベースの初期化（テーブル作成）
 def init_db():

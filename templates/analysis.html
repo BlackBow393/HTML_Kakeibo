@@ -37,16 +37,28 @@
             <select name="category" id="category" onchange="this.form.submit()">
                 {% set categories = ['all' , '食費', '外食', '生活用品', '住宅費', 'お土産', 'コインランドリー', 'レジャー'] %}
                 {% for cat in categories %}
-                <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat if cat != 'all' else 'すべて' }}</option>
+                    <option value="{{ cat }}" 
+                        {% if (cat == 'all' and selected_category is none) or (cat == selected_category) %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ 'すべて' if cat == 'all' else cat }}
+                    </option>
                 {% endfor %}
             </select>
             <label for="user">ユーザーを選択：</label>
             <select name="user" id="user" onchange="this.form.submit()">
                 {% set users = ['all' , 'タクミ', 'ミナヨ'] %}
                 {% for u in users %}
-                <option value="{{ u }}" {% if u == selected_user %}selected{% endif %}>{{ u if u != 'all' else 'すべて' }}</option>
+                    <option value="{{ u }}"
+                        {% if (u == 'all' and selected_user is none) or (u == selected_user) %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ 'すべて' if u == 'all' else u }}
+                    </option>
                 {% endfor %}
-            </select>
+            </select>            
         </form>
         <div class="graph_container">
             <table border="1">
