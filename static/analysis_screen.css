@@ -19,13 +19,6 @@
     width: 100%;
 }
 
-.graph_container td > div {
-    width: 100%;
-    max-width: 100%; /* はみ出さないように */
-    height: 30vw;    /* 画面幅の30%で高さ調整（比率で可変） */
-    min-height: 300px;
-}
-
 .graph_container table th {
     background-color: lightgreen;
 }
@@ -34,4 +27,6 @@
     font-size: 24px;
     font-weight: bold;
     writing-mode: vertical-rl; /* または vertical-lr */
+    white-space: nowrap;
+    width: 120px;
 }

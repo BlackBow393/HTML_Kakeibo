@@ -53,6 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 tickformat: ',d'
                 },
               margin: { t: 40 },
+              legend: {
+                orientation: 'h',  // 横並び
+                y: 1.15,            // グラフの上に表示（1以上で外側）
+                x: 0.5,
+                xanchor: 'center',
+                yanchor: 'bottom',
+                font: {
+                  size: 12
+                }
+              }
             };
       
             Plotly.newPlot('interactive-category-chart', [...traces, totalLabels], layout, { responsive: true });
@@ -149,6 +159,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 tickformat: ',d'
                 },
               margin: { t: 40 },
+              legend: {
+                orientation: 'h',  // 横並び
+                y: 1.15,            // グラフの上に表示（1以上で外側）
+                x: 0.5,
+                xanchor: 'center',
+                yanchor: 'bottom',
+                font: {
+                  size: 12
+                }
+              }
             };
       
             Plotly.newPlot('interactive-user-chart', [...traces, totalLabels], layout, { responsive: true });
@@ -202,6 +222,23 @@ document.addEventListener("DOMContentLoaded", () => {
       loadCategoryPie(year, category, user);
       loadUserChart(year, category, user);
       loadUserPie(year, category, user);
+
+      // ✅ リサイズ対応：Plotlyのグラフをウィンドウサイズに合わせてリサイズ
+      window.addEventListener("resize", () => {
+        const ids = [
+          "interactive-category-chart",
+          "interactive-category-pie",
+          "interactive-user-chart",
+          "interactive-user-pie"
+        ];
+
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.data) {
+            Plotly.Plots.resize(el);
+          }
+        });
+      });
     }
   });
   
