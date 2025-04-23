@@ -241,5 +241,25 @@ def get_data():
 
     return jsonify(expenses)
 
+@app.route("/get_latest_date", methods=["GET"])
+def get_latest_date():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT year, month 
+        FROM expenses 
+        ORDER BY year DESC, month DESC 
+        LIMIT 1
+    """)
+    latest = cursor.fetchone()
+    conn.close()
+
+    if latest:
+        latest_date = f"{latest[0]}年{latest[1]}月"
+    else:
+        latest_date = "データなし"
+
+    return jsonify({"latest_date": latest_date})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

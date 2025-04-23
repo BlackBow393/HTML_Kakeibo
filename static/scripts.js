@@ -42,4 +42,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 初回データ取得
     fetchData();
+
+    fetch('/get_latest_date')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('last-updated').textContent =
+          '最終更新日: ' + data.latest_date;
+      })
+      .catch(error => {
+        console.error('データ取得エラー:', error);
+      });
 });
