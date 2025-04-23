@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, jsonify, session
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
-from graph_analysis1 import create_expense_graph , create_pie_chart
+from graph_analysis1 import api_analysis1
 from graph_analysis2 import create_expense_user_graph , create_pie_user_chart
 from graph_index import create_expense_index_graph , create_lifecost_graph
 
@@ -10,6 +10,7 @@ app = Flask(__name__)
 DB_FILE = "kakeibo.db"
 STATIC_FOLDER = "static"  # 画像を保存するフォルダ
 app.secret_key = "your_secret_key_here"
+app.register_blueprint(api_analysis1)
 
 def get_latest_year():
     """データベースからyear列の最大値を取得"""
@@ -132,21 +133,23 @@ def analysis_page():
 
     # セッションから値を取得（初回アクセスにも備えてデフォルト値を設定）
     selected_year = session.get("selected_year", session["selected_year"])
-    selected_category = session.get("selected_category", None) #all→None
-    selected_user = session.get("selected_user", None) #all→None
+    selected_category = session.get("selected_category", None)  # all→None
+    selected_user = session.get("selected_user", None)  # all→None
 
-    graph_url = create_expense_graph(selected_year, selected_category, selected_user)  # 棒グラフを生成
-    pie_chart_url = create_pie_chart(selected_year, selected_category, selected_user)  # 円グラフを生成
-    graph_user_url = create_expense_user_graph(selected_year, selected_category, selected_user)  # 棒グラフを生成
-    pie_user_chart_url = create_pie_user_chart(selected_year, selected_category, selected_user)
+    # 🔄 Plotly表示用：画像URLは不要なので None にする
+    graph_url = None
+    pie_chart_url = None
     
+    graph_user_url = create_expense_user_graph(selected_year, selected_category, selected_user)
+    pie_user_chart_url = create_pie_user_chart(selected_year, selected_category, selected_user)
+
     # データベースからユニークな年のリストを取得
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT DISTINCT year FROM expenses ORDER BY year DESC")
     years = [row[0] for row in cursor.fetchall()]
     conn.close()
-    
+
     return render_template(
         "analysis.html",
         graph_url=graph_url,
@@ -158,6 +161,7 @@ def analysis_page():
         selected_category=selected_category,
         selected_user=selected_user
     )
+
 
 
 # 📌 データを登録するAPI

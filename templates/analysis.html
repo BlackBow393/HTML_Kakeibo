@@ -70,18 +70,10 @@
                 <tr>
                     <td class="analysis_label">カテゴリー別</td>
                     <td>
-                        {% if graph_url %}
-                            <img src="{{ graph_url }}" alt="分類別各月の支出金額">
-                        {% else %}
-                            <p>データがありません。</p>
-                        {% endif %}
+                        <div id="interactive-category-chart"></div>
                     </td>
                     <td>
-                        {% if pie_chart_url %}
-                            <img src="{{ pie_chart_url }}" alt="分類別年間の支出割合">
-                        {% else %}
-                            <p>データがありません。</p>
-                        {% endif %}
+                        <div id="interactive-pie-chart"></div>
                     </td>
                 </tr>
                 <tr>
@@ -108,5 +100,7 @@
     <footer id="last-updated">最終更新日: 読み込み中...</footer>
     <!-- JavaScriptを読み込む -->
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.1.min.js"></script>
+    <script src="{{ url_for('static', filename='graph.js') }}"></script>
 </body>
 </html>
