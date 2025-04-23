@@ -3,7 +3,7 @@ import sqlite3
 import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
 from graph_analysis1 import api_analysis1
-from graph_analysis2 import create_expense_user_graph , create_pie_user_chart
+from graph_analysis2 import api_analysis2
 from graph_index import create_expense_index_graph , create_lifecost_graph
 
 app = Flask(__name__)
@@ -11,6 +11,7 @@ DB_FILE = "kakeibo.db"
 STATIC_FOLDER = "static"  # 画像を保存するフォルダ
 app.secret_key = "your_secret_key_here"
 app.register_blueprint(api_analysis1)
+app.register_blueprint(api_analysis2)
 
 def get_latest_year():
     """データベースからyear列の最大値を取得"""
@@ -139,9 +140,8 @@ def analysis_page():
     # 🔄 Plotly表示用：画像URLは不要なので None にする
     graph_url = None
     pie_chart_url = None
-    
-    graph_user_url = create_expense_user_graph(selected_year, selected_category, selected_user)
-    pie_user_chart_url = create_pie_user_chart(selected_year, selected_category, selected_user)
+    graph_user_url = None
+    pie_user_chart_url = None
 
     # データベースからユニークな年のリストを取得
     conn = sqlite3.connect(DB_FILE)

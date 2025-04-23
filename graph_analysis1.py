@@ -2,10 +2,6 @@ from flask import request, jsonify, Blueprint
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import os
-import numpy as np
-import matplotlib.font_manager as fm
 
 api_analysis1 = Blueprint("api_analysis1", __name__)
 DB_FILE = "kakeibo.db"

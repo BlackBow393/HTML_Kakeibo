@@ -19,10 +19,11 @@
     width: 100%;
 }
 
-.graph_container img {
-    width: 100%;  /* 画像の幅を100%に調整 */
-    max-width: 900px;  /* 最大サイズを900pxに制限 */
-    height: auto;  /* アスペクト比を維持 */
+.graph_container td > div {
+    width: 100%;
+    max-width: 100%; /* はみ出さないように */
+    height: 30vw;    /* 画面幅の30%で高さ調整（比率で可変） */
+    min-height: 300px;
 }
 
 .graph_container table th {
