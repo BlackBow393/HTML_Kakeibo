@@ -15,6 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
       
             // 各月の合計額を初期化（0でスタート）
             const monthlyTotals = Array(12).fill(0);
+
+            // 🔥 ここでカテゴリーごとの色を定義
+            const categoryColors = {
+              '食費': 'darkcyan',
+              '外食': 'skyblue',
+              '生活用品': 'green',
+              '住宅費': 'steelblue',
+              'お土産': 'orange',
+              'コインランドリー': 'purple',
+              'レジャー': 'coral',
+              // ほか追加したければここに
+            };
       
             data.forEach(item => {
               const values = months.map(m => {
@@ -30,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 y: values,
                 name: item.category,
                 type: 'bar',
+                marker: { color: categoryColors[item.category] || 'gray' }, 
                 hovertemplate: '%{x}<br>%{y:,}円<extra>' + item.category + '</extra>'
               });
             });
@@ -87,6 +100,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 const labels = data.map(item => item[0]);      // カテゴリ名
                 const values = data.map(item => item[1]);      // 金額
                 //const percentages = data.map(item => item[2]); // 割合（%）
+
+                // 🔥 ここでカテゴリーごとの色を定義
+                const categoryColors = {
+                  '食費': 'darkcyan',
+                  '外食': 'skyblue',
+                  '生活用品': 'green',
+                  '住宅費': 'steelblue',
+                  'お土産': 'orange',
+                  'コインランドリー': 'purple',
+                  'レジャー': 'coral',
+                  // ほか追加したければここに
+                };
+
+                // ラベル順に色を決める（なければグレー）
+                const colors = labels.map(label => categoryColors[label] || 'gray');
     
                 const trace = {
                     labels: labels,
@@ -96,6 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     hovertemplate: '%{label}<br>%{value:,}円 (%{percent})<extra></extra>',
                     sort: false,  // ← 自分で並べた順に表示
                     direction: 'clockwise',  // ← 時計回り
+                    marker: {
+                      colors: colors  // 🔥 ここで色を設定！
+                    }
                 };
     
                 const layout = {
@@ -121,6 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
       
             // 各月の合計額を初期化（0でスタート）
             const monthlyTotals = Array(12).fill(0);
+
+            // 🔥 ここでユーザーごとの色を定義
+            const userColors = {
+              'タクミ': 'steelblue',
+              'ミナヨ': 'coral',
+              // ほか追加したければここに
+            };
       
             data.forEach(item => {
               const values = months.map(m => {
@@ -136,6 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 y: values,
                 name: item.user,
                 type: 'bar',
+                marker: { color: userColors[item.user] || 'gray' },
                 hovertemplate: '%{x}<br>%{y:,}円<extra>' + item.user + '</extra>'
               });
             });
@@ -193,6 +232,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const labels = data.map(item => item[0]);      // カテゴリ名
                 const values = data.map(item => item[1]);      // 金額
                 //const percentages = data.map(item => item[2]); // 割合（%）
+
+                // 🔥 ここでユーザーごとの色を定義
+                const userColors = {
+                  'タクミ': 'steelblue',
+                  'ミナヨ': 'coral',
+                  // ほか追加したければここに
+                };
+                
+                // ラベル順に色を決める（なければグレー）
+                const colors = labels.map(label => userColors[label] || 'gray');
     
                 const trace = {
                     labels: labels,
@@ -202,6 +251,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     hovertemplate: '%{label}<br>%{value:,}円 (%{percent})<extra></extra>',
                     sort: false,  // ← 自分で並べた順に表示
                     direction: 'clockwise',  // ← 時計回り
+                    marker: {
+                      colors: colors  // 🔥 ここで色を設定！
+                    }
                 };
     
                 const layout = {

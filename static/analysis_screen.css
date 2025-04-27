@@ -30,3 +30,23 @@
     white-space: nowrap;
     width: 120px;
 }
+
+#interactive-category-chart {
+    width: 100%;
+    max-width: 1200px;
+}
+
+#interactive-category-pie {
+    width: 100%;
+    max-width: 800px;
+}
+
+#interactive-user-chart {
+    width: 100%;
+    max-width: 1200px;
+}
+
+#interactive-user-pie {
+    width: 100%;
+    max-width: 800px;
+}
