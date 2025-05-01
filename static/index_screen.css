@@ -58,3 +58,13 @@
     text-align: left;
     white-space: nowrap;
 }
+
+#interactive-user-chart {
+    width: 100%;
+    max-width: 1200px;
+}
+
+#lifecost-line-chart {
+    width: 100%;
+    max-width: 1200px;
+}

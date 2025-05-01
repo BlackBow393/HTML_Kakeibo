@@ -4,7 +4,7 @@ import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
 from graph_analysis1 import api_analysis1
 from graph_analysis2 import api_analysis2
-from graph_index import create_expense_index_graph , create_lifecost_graph
+from graph_index import api_index
 
 app = Flask(__name__)
 DB_FILE = "kakeibo.db"
@@ -12,6 +12,7 @@ STATIC_FOLDER = "static"  # 画像を保存するフォルダ
 app.secret_key = "your_secret_key_here"
 app.register_blueprint(api_analysis1)
 app.register_blueprint(api_analysis2)
+app.register_blueprint(api_index)
 
 def get_latest_year():
     """データベースからyear列の最大値を取得"""
@@ -61,8 +62,8 @@ def index():
 
     selected_year = session["selected_year"]
 
-    graph_index_url = create_expense_index_graph(selected_year)
-    graph_lifecost_url = create_lifecost_graph(selected_year)
+    graph_index_url = None
+    graph_lifecost_url = None
     
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
