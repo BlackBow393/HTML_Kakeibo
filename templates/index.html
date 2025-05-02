@@ -72,9 +72,9 @@
                                         <td>{{ total[0] }}</td>  <!-- 年 -->
                                         <td>{{ total[1] }}</td>  <!-- 月 -->
                                         <td>{{ total[2] }}</td>  <!-- 分類 -->
-                                        <td>{{ "{:,}".format(total[3]) }}</td>  <!-- タクミ 合計 -->
-                                        <td>{{ "{:,}".format(total[4]) }}</td>  <!-- ミナヨ 合計 -->
-                                        <td>{{ "{:,}".format(total[5]) }}</td>  <!-- 精算額 -->
+                                        <td id="amount-cell">{{ "{:,}".format(total[3]) }}</td>  <!-- タクミ 合計 -->
+                                        <td id="amount-cell">{{ "{:,}".format(total[4]) }}</td>  <!-- ミナヨ 合計 -->
+                                        <td id="amount-cell">{{ "{:,}".format(total[5]) }}</td>  <!-- 精算額 -->
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -104,7 +104,7 @@
                                         <tr>
                                             <td>{{ total[0] }}</td>  <!-- 年 -->
                                             <td>{{ total[1] }}</td>  <!-- 月 -->
-                                            <td>{{ "{:,}".format(total[2]) }}</td>  <!-- 精算額 -->
+                                            <td id="amount-cell">{{ "{:,}".format(total[2]) }}</td>  <!-- 精算額 -->
                                         </tr>
                                         {% endfor %}
                                     </tbody>

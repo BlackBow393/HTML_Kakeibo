@@ -130,6 +130,10 @@ body[data-page="analysis"] .page_header {
     font-size: 18px;
 }
 
+#amount-cell {
+    text-align: right;
+}
+
 footer {
     width: 100%; /* 画面幅いっぱいに広げる */
     max-width: 100vw; /* 画面幅を超えないようにする */

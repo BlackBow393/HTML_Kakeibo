@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${expense[1]}</td>
                         <td>${expense[2]}</td>
                         <td>${expense[3]}</td>
-                        <td>${amount}</td>  <!-- 金額整形済み -->
+                        <td id="amount-cell">${amount}</td>  <!-- 金額整形済み -->
                         <td>${expense[5]}</td>
                     `;
                     tableBody.appendChild(row);
