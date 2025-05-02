@@ -163,7 +163,12 @@ def analysis_page():
         selected_user=selected_user
     )
 
-
+# 📌 マスタ編集ページ
+@app.route("/setting")
+def settings_page():
+    return render_template(
+        "settings.html"
+    )
 
 # 📌 データを登録するAPI
 @app.route("/submit", methods=["POST"])
