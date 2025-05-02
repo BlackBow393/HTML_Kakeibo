@@ -23,12 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 data.forEach((expense, index) => {
                     const row = document.createElement("tr");
+                    const amount = Number(expense[4]).toLocaleString();
                     row.innerHTML = `
                         <td>${expense[0]}</td>
                         <td>${expense[1]}</td>
                         <td>${expense[2]}</td>
                         <td>${expense[3]}</td>
-                        <td>${expense[4]}</td>
+                        <td>${amount}</td>  <!-- 金額整形済み -->
                         <td>${expense[5]}</td>
                     `;
                     tableBody.appendChild(row);
