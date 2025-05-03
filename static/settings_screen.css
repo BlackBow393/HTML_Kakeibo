@@ -6,7 +6,7 @@
 .master-form {
     display: block;
     width: 95%;
-    max-width: 900px; /* 💡 フォームの最大幅を制限 */
+    max-width: 1000px; /* 💡 フォームの最大幅を制限 */
     background-color: #f9f9f9;
     margin: 0 auto; /* ← これで中央に配置される！ */
     border: 2px solid black;
@@ -26,8 +26,8 @@
 
 .master-form input {
     flex: 1;
-    width: auto; /* 🔥 ここを変更 */
-    max-width: 100%; /* フォームの枠を超えないように */
+    width: 100%; /* 🔥 ここを変更 */
+    max-width: 70%; /* フォームの枠を超えないように */
     padding: 5px;
     margin-top: 5px;
     font-size: 20px;
@@ -75,4 +75,46 @@
 #master-delete:hover {
     background-color: pink;
     color: black;
+}
+
+.view_table tr td {
+    vertical-align: top;
+}
+
+.master-table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* 横スクロールを許可 */
+    height: 400px;
+}
+
+.master-table {
+    width: 95%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 🔥 列幅を固定 */
+    margin-left: 2.5%;
+}
+
+.master-table thead {
+    display: block;
+    background-color: lightgray;
+}
+
+.master-table tbody {
+    display: block;
+    max-height: 400px; /* 💡 tbody だけスクロール */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.master-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* 🔥 列幅を統一 */
+}
+
+.master-table th, .master-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
 }

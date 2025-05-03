@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, session
+from flask import Flask, render_template, request, redirect, jsonify, session, url_for
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
@@ -164,13 +164,29 @@ def analysis_page():
     )
 
 # 📌 マスタ編集ページ
-@app.route("/setting", methods=["GET"])
+@app.route("/setting", methods=["GET", "POST"])
 def settings_page():
-    
-    # データベースからユニークな年のリストを取得
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
-    
+
+    if request.method == "POST":
+        category = request.form.get("category", "").strip()
+        user = request.form.get("user", "").strip()
+        if "form_add" in request.form:
+            if category:
+                cursor.execute("INSERT INTO category_master (category) VALUES (?)", (category,))
+            if user:
+                cursor.execute("INSERT INTO user_master (user) VALUES (?)", (user,))
+        elif "form_delete" in request.form:
+            if category:
+                cursor.execute("DELETE FROM category_master WHERE category = ?", (category,))
+            if user:
+                cursor.execute("DELETE FROM user_master WHERE user = ?", (user,))
+        conn.commit()
+        conn.close()
+        # 🔁 POST処理後にリダイレクトして再送信防止
+        return redirect(url_for("settings_page"))
+
     cursor.execute("SELECT id , category FROM category_master ORDER BY id ASC")
     category_master = cursor.fetchall()
     
