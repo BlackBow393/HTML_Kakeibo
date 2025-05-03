@@ -156,8 +156,18 @@ def analysis_page():
     # データベースからユニークな年のリストを取得
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
+    
     cursor.execute("SELECT DISTINCT year FROM expenses ORDER BY year DESC")
     years = [row[0] for row in cursor.fetchall()]
+    
+    # 🔹 カテゴリー一覧を category_master テーブルから取得
+    cursor.execute("SELECT category FROM category_master ORDER BY id ASC")
+    categories = [row[0] for row in cursor.fetchall()]
+    
+    # 🔹 ユーザー一覧を user_master テーブルから取得
+    cursor.execute("SELECT user FROM user_master ORDER BY id ASC")
+    users = [row[0] for row in cursor.fetchall()]
+    
     conn.close()
 
     return render_template(
@@ -167,6 +177,8 @@ def analysis_page():
         graph_user_url=graph_user_url,
         pie_user_chart_url=pie_user_chart_url,
         years=years,
+        categories=categories,
+        users=users,
         selected_year=selected_year,
         selected_category=selected_category,
         selected_user=selected_user

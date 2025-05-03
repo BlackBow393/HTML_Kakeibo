@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`/api/monthly_expense_by_category?${params.toString()}`)
           .then(res => res.json())
           .then(data => {
+            if (!data || data.length === 0) {
+              document.getElementById("interactive-category-chart").innerHTML = "データがありません。";
+              return;
+            }
+
             const months = Array.from({ length: 12 }, (_, i) => i + 1);
             const traces = [];
       
