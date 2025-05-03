@@ -64,13 +64,9 @@
                             <div class="form-group">
                                 <label for="category">分類:</label>
                                 <select id="category" name="category">
-                                    <option value="食費">食費</option>
-                                    <option value="外食">外食</option>
-                                    <option value="生活用品">生活用品</option>
-                                    <option value="住宅費">住宅費</option>
-                                    <option value="お土産">お土産</option>
-                                    <option value="コインランドリー">コインランドリー</option>
-                                    <option value="レジャー">レジャー</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category }}">{{ category }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                     
@@ -105,8 +101,9 @@
                             <div class="form-group">
                                 <label for="user">ユーザー:</label>
                                 <select id="user" name="user">
-                                    <option value="タクミ">タクミ</option>
-                                    <option value="ミナヨ">ミナヨ</option>
+                                    {% for user in users %}
+                                        <option value="{{ user }}">{{ user }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                     

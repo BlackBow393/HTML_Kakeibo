@@ -116,9 +116,18 @@ def input_page():
         ORDER BY year ASC, month ASC
         """)
     expenses = cursor.fetchall()
+    
+    # カテゴリーマスタの取得
+    cursor.execute("SELECT category FROM category_master ORDER BY id ASC")
+    categories = [row[0] for row in cursor.fetchall()]
+    
+    # ユーザーマスタの取得
+    cursor.execute("SELECT user FROM user_master ORDER BY id ASC")
+    users = [row[0] for row in cursor.fetchall()]
+    
     conn.close()
 
-    return render_template("input.html", expenses=expenses)
+    return render_template("input.html", expenses=expenses, categories=categories, users=users)
 
 # 📌 支出分析ページ
 @app.route("/analysis", methods=["GET", "POST"])
