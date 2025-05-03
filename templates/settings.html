@@ -4,7 +4,7 @@
     <title>同棲家計簿　～設定～</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index_screen.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='settings_screen.css') }}">
 </head>
 <body data-page="setting">
     <div class="page_header">
@@ -27,7 +27,82 @@
         <h2>マスタ編集</h2>
         <div class="view_erea">
             <table class="view_table">
-                
+                <tr>
+                    <th>カテゴリーマスタ</th>
+                    <th>ユーザーマスタ</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="master-table">
+                            {% if category_master and category_master|length > 0 %}
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>分類</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for master in category_master %}
+                                    <tr>
+                                        <td>{{ master[0] }}</td>
+                                        <td>{{ master[1] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                                <p>登録されたデータはありません</p>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="master-table">
+                            {% if user_master and user_master|length > 0 %}
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ユーザー</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for master in user_master %}
+                                    <tr>
+                                        <td>{{ master[0] }}</td>
+                                        <td>{{ master[1] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                                <p>登録されたデータはありません</p>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="master-form">
+                            <form id="category-mater-form" action="/submit" method="POST">
+                                <label for="category">分類：</label>
+                                <input type="text">
+                                <button type="submit">登録</button>
+                                <button type="button" id="master-delete">削除</button>
+                            </form>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="master-form">
+                            <form id="user-master-form" action="/submit" method="POST">
+                                <label for="user">ユーザー：</label>
+                                <input type="text">
+                                <button type="submit">登録</button>
+                                <button type="button" id="master-delete">削除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>

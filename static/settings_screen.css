@@ -1,0 +1,78 @@
+.view_erea th {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.master-form {
+    display: block;
+    width: 95%;
+    max-width: 900px; /* 💡 フォームの最大幅を制限 */
+    background-color: #f9f9f9;
+    margin: 0 auto; /* ← これで中央に配置される！ */
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px; /* 余白を確保 */
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.master-form label {
+    margin-top: 10px; /* 上部に余白を追加 */
+    text-align: left;
+    font-size: 16px;
+    width: 90px;
+    background-color: lightgray;
+}
+
+.master-form input {
+    flex: 1;
+    width: auto; /* 🔥 ここを変更 */
+    max-width: 100%; /* フォームの枠を超えないように */
+    padding: 5px;
+    margin-top: 5px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 送信ボタン（type="submit" のみ適用） */
+button[type="submit"] {
+    width: 48%;         /* 幅いっぱいに広げる */
+    padding: 22px;       /* ボタンを大きくする */
+    font-size: 32px;     /* 文字を大きくする */
+    font-weight: bold;   /* 文字を太くする */
+    background-color: slategray;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;    /* 🔥 上のフォームとの間にスペースを作る */
+    float: left;
+}
+
+/* ホバー時のスタイル */
+button[type="submit"]:hover {
+    background-color: steelblue;
+    color: black;
+}
+
+/* 削除ボタン（id="data-delete" のみ適用） */
+#master-delete {
+    width: 48%;         /* 幅いっぱいに広げる */
+    padding: 22px;       /* ボタンを大きくする */
+    font-size: 32px;     /* 文字を大きくする */
+    font-weight: bold;   /* 文字を太くする */
+    background-color: slategray;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;    /* 🔥 上のフォームとの間にスペースを作る */
+    float: right;
+}
+
+/* ホバー時のスタイル */
+#master-delete:hover {
+    background-color: pink;
+    color: black;
+}

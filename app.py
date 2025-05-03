@@ -164,10 +164,25 @@ def analysis_page():
     )
 
 # 📌 マスタ編集ページ
-@app.route("/setting")
+@app.route("/setting", methods=["GET"])
 def settings_page():
+    
+    # データベースからユニークな年のリストを取得
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT id , category FROM category_master ORDER BY id ASC")
+    category_master = cursor.fetchall()
+    
+    cursor.execute("SELECT id , user FROM user_master ORDER BY id ASC")
+    user_master = cursor.fetchall()
+    
+    conn.close()
+    
     return render_template(
-        "settings.html"
+        "settings.html",
+        category_master=category_master,
+        user_master=user_master
     )
 
 # 📌 データを登録するAPI
