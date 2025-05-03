@@ -16,10 +16,10 @@
     <nav class="menu-bar" id="sidebar">
         <h1>メニュー</h1>
         <ul>
-            <li><a href="{{ url_for('index') }}">ホーム</a></li>
-            <li><a href="{{ url_for('input_page') }}">支出入力</a></li>
-            <li><a href="{{ url_for('analysis_page') }}">支出分析</a></li>
-            <li><a href="{{ url_for('settings_page') }}">マスタ設定</a></li>
+            <li><a href="{{ url_for('page_view.index') }}">ホーム</a></li>
+            <li><a href="{{ url_for('page_view.input_page') }}">支出入力</a></li>
+            <li><a href="{{ url_for('page_view.analysis_page') }}">支出分析</a></li>
+            <li><a href="{{ url_for('page_view.settings_page') }}">マスタ設定</a></li>
         </ul>
     </nav>
 
@@ -84,7 +84,7 @@
                 <tr>
                     <td>
                         <div class="master-form">
-                            <form id="category-mater-form" action="{{ url_for('settings_page') }}" method="POST">
+                            <form id="category-mater-form" action="{{ url_for('page_view.settings_page') }}" method="POST">
                                 <label for="category">分類：</label>
                                 <input type="text" name="category" required>
                                 <button type="submit" id="master-add" name="form_add" value="category">登録</button>
@@ -94,7 +94,7 @@
                     </td>
                     <td>
                         <div class="master-form">
-                            <form id="user-master-form" action="{{ url_for('settings_page') }}" method="POST">
+                            <form id="user-master-form" action="{{ url_for('page_view.settings_page') }}" method="POST">
                                 <label for="user">ユーザー：</label>
                                 <input type="text" name="user" required>
                                 <button type="submit" id="master-add" name="form_add" value="user">登録</button>

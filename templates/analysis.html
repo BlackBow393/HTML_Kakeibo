@@ -16,10 +16,10 @@
     <nav class="menu-bar" id="sidebar">
         <h1>メニュー</h1>
         <ul>
-            <li><a href="{{ url_for('index') }}">ホーム</a></li>
-            <li><a href="{{ url_for('input_page') }}">支出入力</a></li>
-            <li><a href="{{ url_for('analysis_page') }}">支出分析</a></li>
-            <li><a href="{{ url_for('settings_page') }}">マスタ設定</a></li>
+            <li><a href="{{ url_for('page_view.index') }}">ホーム</a></li>
+            <li><a href="{{ url_for('page_view.input_page') }}">支出入力</a></li>
+            <li><a href="{{ url_for('page_view.analysis_page') }}">支出分析</a></li>
+            <li><a href="{{ url_for('page_view.settings_page') }}">マスタ設定</a></li>
         </ul>
     </nav>
 
