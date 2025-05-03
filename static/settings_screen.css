@@ -36,7 +36,7 @@
 }
 
 /* 送信ボタン（type="submit" のみ適用） */
-button[type="submit"] {
+#master-add {
     width: 48%;         /* 幅いっぱいに広げる */
     padding: 22px;       /* ボタンを大きくする */
     font-size: 32px;     /* 文字を大きくする */
@@ -51,12 +51,12 @@ button[type="submit"] {
 }
 
 /* ホバー時のスタイル */
-button[type="submit"]:hover {
+#master-add:hover {
     background-color: steelblue;
     color: black;
 }
 
-/* 削除ボタン（id="data-delete" のみ適用） */
+/* 削除ボタン（id="master-delete" のみ適用） */
 #master-delete {
     width: 48%;         /* 幅いっぱいに広げる */
     padding: 22px;       /* ボタンを大きくする */
