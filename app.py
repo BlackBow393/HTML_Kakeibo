@@ -9,8 +9,18 @@ from graph_analysis1 import api_analysis1
 from graph_analysis2 import api_analysis2
 from graph_index import api_index
 
-app = Flask(__name__)
-DB_FILE = "kakeibo.db"
+import webbrowser
+from threading import Timer
+import os
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static")
+    )
+DB_FILE = r"C:\Users\t9374\OneDrive\デスクトップ\家計簿\kakeibo.db"
 STATIC_FOLDER = "static"  # 画像を保存するフォルダ
 app.secret_key = "your_secret_key_here"
 
@@ -162,4 +172,6 @@ def get_latest_date():
     return jsonify({"latest_date": latest_date})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # 1秒後にブラウザを開く（Flaskサーバの起動と並行で）
+    Timer(1, lambda: webbrowser.open_new("http://127.0.0.1:5000")).start()
+    app.run(host="127.0.0.1", port=5000, debug=False)
