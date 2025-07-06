@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, session,redirect,url_for
 import sqlite3
+from config import DB_FILE
 
-DB_FILE = "kakeibo.db"
 page_view = Blueprint("page_view", __name__)
 
 # 📌 ホームページ（支出入力画面）

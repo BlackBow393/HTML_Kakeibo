@@ -2,10 +2,10 @@ from flask import request, jsonify, Blueprint
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')  # ここでバックエンドをAggに設定
+from config import DB_FILE
 
 
 api_index = Blueprint("api_index", __name__)
-DB_FILE = "kakeibo.db"
 STATIC_FOLDER = "static"  # 画像を保存するフォルダ
 
 # 📌 グラフを作成する関数（ユーザーごとの月別支出額）

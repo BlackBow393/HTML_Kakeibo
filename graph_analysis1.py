@@ -2,9 +2,9 @@ from flask import request, jsonify, Blueprint
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')
+from config import DB_FILE
 
 api_analysis1 = Blueprint("api_analysis1", __name__)
-DB_FILE = "kakeibo.db"
 STATIC_FOLDER = "static"
 
 # 📌 グラフを作成する関数（カテゴリーごとの月別支出額）

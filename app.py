@@ -12,15 +12,13 @@ from graph_index import api_index
 import webbrowser
 from threading import Timer
 import os
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+from config import DB_FILE,BASE_DIR
 
 app = Flask(
     __name__,
     template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static")
     )
-DB_FILE = os.path.join(BASE_DIR, "kakeibo.db")
 STATIC_FOLDER = "static"  # 画像を保存するフォルダ
 app.secret_key = "your_secret_key_here"
 
