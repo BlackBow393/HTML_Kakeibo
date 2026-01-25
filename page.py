@@ -25,8 +25,20 @@ def index():
         SELECT year, month, category,
            CAST(SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END) AS INTEGER) AS user_a_total,
            CAST(SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) AS INTEGER) AS user_b_total,
-            CAST((SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
-                    SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 AS INTEGER) AS settlement_amount
+            CAST(
+                CASE
+                    WHEN year <= 2025 THEN
+                        (SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
+                            SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 
+                    WHEN year >= 2026 AND category IN ('食費','外食') THEN
+                        -1 * SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)
+                    WHEN year >= 2026 AND category IN ('生活用品','コインランドリー','レジャー') THEN
+                        (SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
+                            SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 
+                    ELSE
+                        0
+                END
+            AS INTEGER) AS settlement_amount
         FROM expenses
         WHERE year = ?
         GROUP BY year, month, category
@@ -37,12 +49,20 @@ def index():
     # 年・月・分類ごとに、ユーザーAとユーザーBの合計金額を列で取得
     cursor.execute("""
         SELECT year, month, 
-            CAST((SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
-                    SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 AS INTEGER) AS settlement_amount
-        FROM expenses
-        WHERE year = ?
-        GROUP BY year, month
-        ORDER BY year ASC, month ASC
+        CAST(
+            CASE
+                WHEN year <= 2025 THEN
+                    (SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
+                     SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2
+                ELSE
+                    (SUM(CASE WHEN user = 'ミナヨ' AND category IN ('生活用品','コインランドリー','レジャー') THEN amount ELSE 0 END) -
+                     SUM(CASE WHEN user = 'タクミ' AND category IN ('食費','外食','生活用品','コインランドリー','レジャー') THEN amount ELSE 0 END)) / 2
+            END
+        AS INTEGER) AS settlement_amount
+    FROM expenses
+    WHERE year = ?
+    GROUP BY year, month
+    ORDER BY year ASC, month ASC
     """, (selected_year,))
     calcurate_totals = cursor.fetchall()
     
