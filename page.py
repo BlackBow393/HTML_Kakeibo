@@ -7,6 +7,13 @@ page_view = Blueprint("page_view", __name__)
 # 📌 ホームページ（支出入力画面）
 @page_view.route("/", methods=["GET", "POST"])
 def index():
+    if "selected_year" not in session:
+        conn_tmp = sqlite3.connect(DB_FILE)
+        cur_tmp = conn_tmp.cursor()
+        cur_tmp.execute("SELECT MAX(year) FROM expenses")
+        session["selected_year"] = cur_tmp.fetchone()[0]
+        conn_tmp.close()
+    
     if request.method == "POST":
         session["selected_year"] = int(request.form.get("year", session["selected_year"]))
 
@@ -35,10 +42,14 @@ def index():
                     WHEN year >= 2026 AND category IN ('食費','外食') THEN
                         -1 * SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)
                     
+                    WHEN year >= 2026 AND category = '住宅費' THEN
+                        0 
+                    
                     ELSE
                         (SUM( CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END ) -
                         SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END )) / 2
                 END
+                AS INTEGER
             ) AS settlement_amount
         FROM expenses
         WHERE year = ?
@@ -54,11 +65,14 @@ def index():
                 CASE
                     WHEN year <= 2025 THEN
                         (SUM(CASE WHEN user = 'ミナヨ' THEN amount ELSE 0 END) - 
-                        SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 AS INTEGER
+                        SUM(CASE WHEN user = 'タクミ' THEN amount ELSE 0 END)) / 2 
                         
                     ELSE
                         (SUM( CASE WHEN user = 'ミナヨ' AND category IN ('生活用品','コインランドリー','レジャー') THEN amount ELSE 0 END ) -
-                        SUM(CASE WHEN user = 'タクミ' AND category IN ('食費','外食','生活用品','コインランドリー','レジャー') THEN amount ELSE 0 END)) / 2 AS INTEGER
+                        SUM(CASE WHEN user = 'タクミ' AND category IN ('生活用品','コインランドリー','レジャー') THEN amount ELSE 0 END)) / 2 -
+                        SUM(CASE WHEN user = 'タクミ' AND category IN ('食費','外食') THEN amount ELSE 0 END ) 
+                END
+                AS INTEGER
             ) AS settlement_amount
         FROM expenses
         WHERE year = ?
