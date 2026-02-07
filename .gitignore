@@ -4,3 +4,4 @@ create_table.py
 create_master.py
 app.exe
 build/
+kakeibo.db
